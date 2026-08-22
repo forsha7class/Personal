@@ -41,19 +41,29 @@ syncMotionUI();
 const menuBtn=$("#menuBtn"), mobileMenu=$("#mobileMenu");
 const menuOpenIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
 const menuCloseIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+let lockedScrollY=0;
 function setMenu(open){
   if(!mobileMenu||!menuBtn)return;
-  mobileMenu.classList.toggle("open",open);
-  mobileMenu.setAttribute("aria-hidden",String(!open));
-  menuBtn.setAttribute("aria-expanded",String(open));
-  menuBtn.setAttribute("aria-label",open?"Close navigation":"Open navigation");
-  menuBtn.innerHTML=open?menuCloseIcon:menuOpenIcon;
-  document.body.classList.toggle("menu-open",open);
+  const next=Boolean(open);
+  if(next){
+    lockedScrollY=window.scrollY||document.documentElement.scrollTop||0;
+    mobileMenu.classList.add("open");
+    document.body.style.top=`-${lockedScrollY}px`;
+  }else{
+    mobileMenu.classList.remove("open");
+    document.body.style.top="";
+  }
+  mobileMenu.setAttribute("aria-hidden",String(!next));
+  menuBtn.setAttribute("aria-expanded",String(next));
+  menuBtn.setAttribute("aria-label",next?"Close navigation":"Open navigation");
+  menuBtn.innerHTML=next?menuCloseIcon:menuOpenIcon;
+  document.body.classList.toggle("menu-open",next);
+  if(!next)requestAnimationFrame(()=>window.scrollTo(0,lockedScrollY));
 }
 menuBtn?.addEventListener("click",()=>setMenu(!mobileMenu.classList.contains("open")));
-$$(".mobile-menu a").forEach(a=>a.addEventListener("click",()=>setMenu(false)));
-addEventListener("keydown",e=>{if(e.key==="Escape")setMenu(false)});
-addEventListener("resize",()=>{if(innerWidth>980)setMenu(false)},{passive:true});
+$$('.mobile-menu a').forEach(a=>a.addEventListener("click",()=>setMenu(false)));
+addEventListener("keydown",e=>{if(e.key==="Escape"&&mobileMenu.classList.contains("open"))setMenu(false)});
+addEventListener("resize",()=>{if(innerWidth>980&&mobileMenu.classList.contains("open"))setMenu(false)},{passive:true});
 mobileMenu?.addEventListener("click",e=>{if(e.target===mobileMenu)setMenu(false)});
 
 const orb=$(".pointer-light");
