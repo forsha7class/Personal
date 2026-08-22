@@ -10,41 +10,41 @@ $("#themeBtn")?.addEventListener("click",()=>{
 });
 
 let motionOn=!reduce;
-$("#motionBtn")?.addEventListener("click",()=>{
-  motionOn=!motionOn;
+const motionBtn=$("#motionBtn");
+function syncMotionUI(){
+  if(!motionBtn)return;
+  const state=motionOn?"ON":"OFF";
+  const label=motionOn?"Disable visual effects":"Enable visual effects";
+  motionBtn.setAttribute("aria-label",label);
+  motionBtn.setAttribute("title",label);
+  const stateEl=motionBtn.querySelector("b");
+  if(stateEl)stateEl.textContent=state;
+}
+function setMotion(next){
+  motionOn=Boolean(next);
   document.body.classList.toggle("motion-off",!motionOn);
-});
+  if(!motionOn)$$(".reveal").forEach(el=>{el.classList.add("is-visible");el.style.opacity="1";el.style.transform="none";});
+  else $$(".reveal").forEach(el=>{el.style.opacity="";el.style.transform="";});
+  syncMotionUI();
+}
+motionBtn?.addEventListener("click",()=>setMotion(!motionOn));
+syncMotionUI();
 
 const menuBtn=$("#menuBtn"), mobileMenu=$("#mobileMenu");
-const menuOpenIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
-const menuCloseIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
-menuBtn?.addEventListener("click",()=>{
-  const open=mobileMenu.classList.toggle("open");
+const menuOpenIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
+const menuCloseIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+function setMenu(open){
+  if(!mobileMenu||!menuBtn)return;
+  mobileMenu.classList.toggle("open",open);
   mobileMenu.setAttribute("aria-hidden",String(!open));
   menuBtn.setAttribute("aria-expanded",String(open));
-  menuBtn.setAttribute("aria-label",open ? "Close navigation" : "Open navigation");
-  menuBtn.innerHTML=open ? menuCloseIcon : menuOpenIcon;
+  menuBtn.setAttribute("aria-label",open?"Close navigation":"Open navigation");
+  menuBtn.innerHTML=open?menuCloseIcon:menuOpenIcon;
   document.body.classList.toggle("menu-open",open);
-});
-
-$$(".mobile-menu a").forEach(a=>a.addEventListener("click",()=>{
-  mobileMenu.classList.remove("open");
-  mobileMenu.setAttribute("aria-hidden","true");
-  menuBtn?.setAttribute("aria-expanded","false");
-  menuBtn?.setAttribute("aria-label","Open navigation");
-  if(menuBtn)menuBtn.innerHTML=menuOpenIcon;
-  document.body.classList.remove("menu-open");
-}));
-addEventListener("keydown",e=>{
-  if(e.key==="Escape"){
-    mobileMenu?.classList.remove("open");
-    mobileMenu?.setAttribute("aria-hidden","true");
-    menuBtn?.setAttribute("aria-expanded","false");
-    menuBtn?.setAttribute("aria-label","Open navigation");
-    if(menuBtn)menuBtn.innerHTML=menuOpenIcon;
-    document.body.classList.remove("menu-open");
-  }
-});
+}
+menuBtn?.addEventListener("click",()=>setMenu(!mobileMenu.classList.contains("open")));
+$$(".mobile-menu a").forEach(a=>a.addEventListener("click",()=>setMenu(false)));
+addEventListener("keydown",e=>{if(e.key==="Escape")setMenu(false)});
 
 const orb=$(".pointer-light");
 if(!reduce&&orb)addEventListener("pointermove",e=>{
@@ -66,7 +66,7 @@ if("IntersectionObserver"in window&&!reduce){
   reveals.forEach(el=>io.observe(el));
 }else reveals.forEach(el=>el.classList.add("is-visible"));
 
-const sections=$$("main section[id]"), nav=$$(".nav a"), rail=$$(".rail-item");
+const navTargets=[...new Set($$("main [id]"))], nav=$$(".nav a"), rail=$$(".rail-item");
 if("IntersectionObserver"in window){
   const secObs=new IntersectionObserver(entries=>{
     entries.forEach(entry=>{
@@ -74,8 +74,8 @@ if("IntersectionObserver"in window){
       nav.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+entry.target.id));
       rail.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+entry.target.id));
     });
-  },{threshold:.5});
-  sections.forEach(s=>secObs.observe(s));
+  },{threshold:.45,rootMargin:"-10% 0px -35% 0px"});
+  navTargets.forEach(s=>secObs.observe(s));
 }
 
 if(!reduce){
