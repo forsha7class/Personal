@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Dika — Technology × Law personal operating system.">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Dika — Technology × Law. Personal portfolio exploring code, law, systems, and digital experiences.">
   <meta name="theme-color" content="#07090d">
   <title>DIKA — Technology × Law</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,7 @@
         <span class="brand-text"><b>DIKA</b><small>PERSONAL OS</small></span>
       </a>
 
-      <nav class="nav" aria-label="Primary">
+      <nav class="nav" id="siteNav" aria-label="Primary navigation">
         <a class="active" href="#home">HOME</a>
         <a href="#about">ABOUT</a>
         <a href="#lawtech">LAW × TECH</a>
@@ -35,23 +35,57 @@
       </nav>
 
       <div class="header-controls">
-        <button class="mini" id="themeBtn" type="button" aria-label="Toggle theme">☼</button>
-        <button class="mini bars" id="menuBtn" type="button" aria-label="Open navigation">☷</button>
-        <button class="gold-orb" id="motionBtn" type="button" aria-label="Toggle motion"><i></i></button>
+        <button class="icon-button" id="themeBtn" type="button" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2M12 19v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M3 12h2M19 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/><circle cx="12" cy="12" r="3.5"/></svg>
+        </button>
+        <button class="icon-button" id="motionBtn" type="button" aria-label="Toggle motion">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h3M17 12h3M7 7l2 2M15 15l2 2M7 17l2-2M15 9l2-2"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+        <button class="icon-button menu-toggle" id="menuBtn" type="button" aria-label="Open navigation" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <div class="container mobile-menu-inner">
+        <a href="#home">HOME <span>01</span></a>
+        <a href="#about">ABOUT <span>02</span></a>
+        <a href="#lawtech">LAW × TECH <span>03</span></a>
+        <a href="#projects">PROJECTS <span>04</span></a>
+        <a href="#experiments">EXPERIMENTS <span>05</span></a>
+        <a href="#thoughts">THOUGHTS <span>06</span></a>
+        <a href="#contact">CONTACT <span>07</span></a>
       </div>
     </div>
   </header>
 
   <aside class="rail" aria-label="Quick links">
-    <a class="rail-item active" href="#home">⌂</a>
-    <a class="rail-item" href="#about">♙</a>
-    <a class="rail-item" href="#projects">▣</a>
-    <a class="rail-item" href="#experiments">⌁</a>
-    <a class="rail-item" href="#thoughts">◫</a>
+    <a class="rail-item active" href="#home" aria-label="Home">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 10 8-6 8 6v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg>
+    </a>
+    <a class="rail-item" href="#about" aria-label="About">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M5 20c.7-3.2 3.1-5 7-5s6.3 1.8 7 5"/></svg>
+    </a>
+    <a class="rail-item" href="#projects" aria-label="Projects">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>
+    </a>
+    <a class="rail-item" href="#experiments" aria-label="Experiments">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/><path d="M8 15h8"/></svg>
+    </a>
+    <a class="rail-item" href="#thoughts" aria-label="Thoughts">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16H7zM10 8h4M10 12h4M10 16h3"/></svg>
+    </a>
     <span class="rail-sep"></span>
-    <a class="rail-item" href="https://github.com/forsha7class" target="_blank" rel="noopener noreferrer" aria-label="GitHub">◉</a>
-    <a class="rail-item" href="https://instagram.com/kwdkaa" target="_blank" rel="noopener noreferrer" aria-label="Instagram">◎</a>
-    <a class="rail-item" href="mailto:hello@example.com" aria-label="Email">✉</a>
+    <a class="rail-item" href="https://github.com/forsha7class" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 19c-4 1-4-2-6-2m12 4v-3.9c0-1 .1-1.4-.5-2.1 1.7-.2 3.5-.8 3.5-3.8 0-.8-.3-1.5-.8-2 .1-.2.3-1-.1-2.1 0 0-.7-.2-2.2.8a7.6 7.6 0 0 0-4 0C8.4 7 7.7 7.2 7.7 7.2c-.4 1.1-.2 1.9-.1 2.1-.5.5-.8 1.2-.8 2 0 3 1.8 3.6 3.5 3.8-.4.4-.5.9-.5 1.6V21"/></svg>
+    </a>
+    <a class="rail-item" href="https://instagram.com/kwdkaa" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.5"/><circle cx="17" cy="7" r="1"/></svg>
+    </a>
+    <a class="rail-item" href="mailto:hello@example.com" aria-label="Email">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m5 7 7 5 7-5"/></svg>
+    </a>
   </aside>
 
   <main id="main">
@@ -61,20 +95,17 @@
         <div class="hero-left reveal">
           <div class="eyebrow"><span class="pulse"></span> LAW × TECHNOLOGY</div>
           <h1>TECHNOLOGY<br><span>× LAW</span></h1>
-          <p class="hero-sub">
-            Exploring the intersection of law, technology, and systems
-            to build a better digital society.
-          </p>
+          <p class="hero-sub">Exploring the intersection of law, technology, and systems to build a better digital society.</p>
 
           <div class="terminal-line">
             <span class="prompt">&gt;</span>
             <code id="typed">const purpose = "Build, Learn, Contribute";</code>
-            <b></b>
+            <b aria-hidden="true"></b>
           </div>
 
           <div class="hero-actions">
-            <a class="btn primary magnetic" href="#projects">EXPLORE MY WORK <strong>→</strong></a>
-            <a class="btn secondary magnetic" href="#about">ABOUT ME <strong>♙</strong></a>
+            <a class="btn primary magnetic" href="#projects">EXPLORE MY WORK <span>→</span></a>
+            <a class="btn secondary magnetic" href="#about">ABOUT ME <span>⌁</span></a>
           </div>
 
           <div class="meta">
@@ -86,9 +117,8 @@
 
         <div class="hero-right reveal" data-tilt>
           <div class="hero-art">
-            <img src="assets/themis-hero.png" alt="Dark futuristic Lady Themis artwork representing justice and technology">
+            <img src="assets/themis-hero.png" alt="Futuristic Lady Themis representing law and technology" width="1536" height="2730">
             <div class="art-overlay"></div>
-            <div class="rings" aria-hidden="true"></div>
           </div>
 
           <div class="quote floating">
@@ -105,7 +135,7 @@
             <em>95%</em>
           </div>
 
-          <div class="scroll-cue"><span>!</span><small>SCROLL<br>DOWN</small></div>
+          <div class="scroll-cue"><span>↓</span><small>SCROLL<br>DOWN</small></div>
         </div>
       </div>
     </section>
@@ -113,31 +143,16 @@
     <section id="about" class="dashboard">
       <div class="container dashboard-main">
         <article class="focus-card reveal">
-          <div class="focus-icon">⚖</div>
-          <h2>LAW</h2>
-          <p>Understanding legal systems, rights, and justice in society.</p>
-          <a href="#lawtech">↗</a>
+          <div class="focus-icon">⚖</div><h2>LAW</h2><p>Understanding legal systems, rights, and justice in society.</p><a href="#lawtech">↗</a>
         </article>
-
         <article class="focus-card reveal">
-          <div class="focus-icon code">&lt;/&gt;</div>
-          <h2>TECHNOLOGY</h2>
-          <p>Building digital solutions with code, design, and data.</p>
-          <a href="#projects">↗</a>
+          <div class="focus-icon code">&lt;/&gt;</div><h2>TECHNOLOGY</h2><p>Building digital solutions with code, design, and data.</p><a href="#projects">↗</a>
         </article>
-
         <article class="focus-card reveal">
-          <div class="focus-icon">⌘</div>
-          <h2>SYSTEMS</h2>
-          <p>Exploring how laws, tech, and people interact as systems.</p>
-          <a href="#experiments">↗</a>
+          <div class="focus-icon">⌘</div><h2>SYSTEMS</h2><p>Exploring how laws, tech, and people interact as systems.</p><a href="#experiments">↗</a>
         </article>
-
         <article class="focus-card reveal">
-          <div class="focus-icon">✧</div>
-          <h2>IMPACT</h2>
-          <p>Creating meaningful outcomes through ideas and innovation.</p>
-          <a href="#thoughts">↗</a>
+          <div class="focus-icon">✧</div><h2>IMPACT</h2><p>Creating meaningful outcomes through ideas and innovation.</p><a href="#thoughts">↗</a>
         </article>
 
         <article id="experiments" class="build-card reveal">
@@ -174,15 +189,9 @@
               <div class="tool"><b>St</b><small>Streamlit</small></div>
             </div>
           </div>
-
           <aside class="focus-area">
             <div>FOCUS AREAS</div>
-            <ul>
-              <li>AI &amp; Automation</li>
-              <li>Data &amp; Analytics</li>
-              <li>Web Development</li>
-              <li>Legal Tech</li>
-            </ul>
+            <ul><li>AI &amp; Automation</li><li>Data &amp; Analytics</li><li>Web Development</li><li>Legal Tech</li></ul>
           </aside>
         </section>
       </div>
@@ -191,10 +200,7 @@
     <section id="lawtech" class="section">
       <div class="container content-grid reveal">
         <div class="section-id">02 / LAW × TECH</div>
-        <div>
-          <h2>Not two interests.<br><span>One intersection.</span></h2>
-          <p>Technology changes what people can do. Law shapes what they should be allowed to do. I’m interested in the system between those two.</p>
-        </div>
+        <div><h2>Not two interests.<br><span>One intersection.</span></h2><p>Technology changes what people can do. Law shapes what they should be allowed to do. I’m interested in the system between those two.</p></div>
       </div>
     </section>
 
@@ -223,7 +229,10 @@
     <section id="contact" class="section contact">
       <div class="container contact-card reveal">
         <div><span>06 / CONNECT</span><h2>Let’s build something<br><b>worth understanding.</b></h2></div>
-        <a class="btn primary magnetic" href="https://instagram.com/kwdkaa" target="_blank" rel="noopener noreferrer">OPEN INSTAGRAM ↗</a>
+        <div class="contact-actions">
+          <a class="btn primary magnetic" href="https://instagram.com/kwdkaa" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a>
+          <a class="btn secondary magnetic" href="mailto:hello@example.com">EMAIL ↗</a>
+        </div>
       </div>
     </section>
   </main>
@@ -231,6 +240,7 @@
   <footer class="footer">
     <div class="container footer-row"><span>© <span id="year"></span> DIKA — TECHNOLOGY × LAW</span><span>BUILT WITH ♡ &amp; CODE</span></div>
   </footer>
+
   <script src="js/app.js" defer></script>
 </body>
 </html>
