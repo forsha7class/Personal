@@ -23,8 +23,12 @@ function syncMotionUI(){
 function setMotion(next){
   motionOn=Boolean(next);
   document.body.classList.toggle("motion-off",!motionOn);
-  if(!motionOn)$$(".reveal").forEach(el=>{el.classList.add("is-visible");el.style.opacity="1";el.style.transform="none";});
-  else $$(".reveal").forEach(el=>{el.style.opacity="";el.style.transform="";});
+  if(!motionOn){
+    $$(".reveal").forEach(el=>{el.classList.add("is-visible");el.style.opacity="1";el.style.transform="none";});
+    $$("[data-tilt],.magnetic").forEach(el=>{el.style.transform="none";});
+  }else{
+    $$(".reveal").forEach(el=>{el.style.opacity="";el.style.transform="";});
+  }
   syncMotionUI();
 }
 motionBtn?.addEventListener("click",()=>{
@@ -49,6 +53,8 @@ function setMenu(open){
 menuBtn?.addEventListener("click",()=>setMenu(!mobileMenu.classList.contains("open")));
 $$(".mobile-menu a").forEach(a=>a.addEventListener("click",()=>setMenu(false)));
 addEventListener("keydown",e=>{if(e.key==="Escape")setMenu(false)});
+addEventListener("resize",()=>{if(innerWidth>980)setMenu(false)},{passive:true});
+mobileMenu?.addEventListener("click",e=>{if(e.target===mobileMenu)setMenu(false)});
 
 const orb=$(".pointer-light");
 if(!reduce&&orb)addEventListener("pointermove",e=>{
@@ -63,26 +69,36 @@ if("IntersectionObserver"in window&&!reduce){
   const io=new IntersectionObserver(entries=>{
     entries.forEach(entry=>{
       if(!entry.isIntersecting)return;
+      entry.target.style.setProperty("--reveal-delay", `${(entry.target.dataset.delay ?? 0)}ms`);
       entry.target.classList.add("is-visible");
       io.unobserve(entry.target);
     });
   },{threshold:.12,rootMargin:"0px 0px -7% 0px"});
-  reveals.forEach(el=>io.observe(el));
+  reveals.forEach((el,i)=>{ el.dataset.delay = String(Math.min(i * 35, 280)); io.observe(el); });
 }else reveals.forEach(el=>el.classList.add("is-visible"));
 
 const nav=$$(".nav a"), rail=$$(".rail-item");
-const navTargetIds=new Set([...nav,...rail].map(a=>a.getAttribute("href")).filter(h=>h?.startsWith("#")));
-const navTargets=[...navTargetIds].map(id=>document.getElementById(id.slice(1))).filter(Boolean);
-if("IntersectionObserver"in window){
-  const secObs=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(!entry.isIntersecting)return;
-      nav.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+entry.target.id));
-      rail.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+entry.target.id));
-    });
-  },{threshold:.45,rootMargin:"-10% 0px -35% 0px"});
-  navTargets.forEach(s=>secObs.observe(s));
+const orderedTargetIds=["home","about","experiments","lawtech","projects","thoughts","contact"];
+const navTargets=orderedTargetIds.map(id=>document.getElementById(id)).filter(Boolean);
+let activeTick=0;
+function updateActiveNav(){
+  if(activeTick)return;
+  activeTick=1;
+  requestAnimationFrame(()=>{
+    activeTick=0;
+    const marker=innerHeight*.34;
+    let current="home";
+    for(const target of navTargets){
+      if(target.getBoundingClientRect().top<=marker)current=target.id;
+      else break;
+    }
+    nav.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+current));
+    rail.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+current));
+  });
 }
+addEventListener("scroll",updateActiveNav,{passive:true});
+addEventListener("resize",updateActiveNav,{passive:true});
+updateActiveNav();
 
 if(!reduce){
   $$(".magnetic").forEach(btn=>{
@@ -125,4 +141,25 @@ if(type&&!reduce){
     setTimeout(loop,del?18:38);
   };
   loop();
+}
+
+// V4 visual polish: staggered reveals and pointer-aware card glow.
+const revealSequence = $$(".reveal");
+revealSequence.forEach((el, i) => {
+  el.style.setProperty("--delay", `${Math.min(i * 45, 420)}ms`);
+});
+
+if (!reduce) {
+  $$(".focus-card,.project,.thought,.tool").forEach(card => {
+    card.addEventListener("pointermove", e => {
+      const r = card.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width) * 100;
+      const y = ((e.clientY - r.top) / r.height) * 100;
+      card.style.backgroundImage =
+        `radial-gradient(circle at ${x}% ${y}%, rgba(217,173,85,.08), transparent 38%), linear-gradient(150deg,#11141a,#0d1016)`;
+    });
+    card.addEventListener("pointerleave", () => {
+      card.style.backgroundImage = "";
+    });
+  });
 }
