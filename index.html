@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Dika — Technology × Law personal operating system.">
+  <meta name="theme-color" content="#07090d">
+  <title>DIKA — Technology × Law</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="pointer-light" aria-hidden="true"></div>
+
+  <header class="header">
+    <div class="container header-row">
+      <a class="brand" href="#home" aria-label="Dika home">
+        <span class="brand-mark">D</span>
+        <span class="brand-text"><b>DIKA</b><small>PERSONAL OS</small></span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="active" href="#home">HOME</a>
+        <a href="#about">ABOUT</a>
+        <a href="#lawtech">LAW × TECH</a>
+        <a href="#projects">PROJECTS</a>
+        <a href="#experiments">EXPERIMENTS</a>
+        <a href="#thoughts">THOUGHTS</a>
+        <a href="#contact">CONTACT</a>
+      </nav>
+
+      <div class="header-controls">
+        <button class="mini" id="themeBtn" type="button" aria-label="Toggle theme">☼</button>
+        <button class="mini bars" id="menuBtn" type="button" aria-label="Open navigation">☷</button>
+        <button class="gold-orb" id="motionBtn" type="button" aria-label="Toggle motion"><i></i></button>
+      </div>
+    </div>
+  </header>
+
+  <aside class="rail" aria-label="Quick links">
+    <a class="rail-item active" href="#home">⌂</a>
+    <a class="rail-item" href="#about">♙</a>
+    <a class="rail-item" href="#projects">▣</a>
+    <a class="rail-item" href="#experiments">⌁</a>
+    <a class="rail-item" href="#thoughts">◫</a>
+    <span class="rail-sep"></span>
+    <a class="rail-item" href="https://github.com/forsha7class" target="_blank" rel="noopener noreferrer" aria-label="GitHub">◉</a>
+    <a class="rail-item" href="https://instagram.com/kwdkaa" target="_blank" rel="noopener noreferrer" aria-label="Instagram">◎</a>
+    <a class="rail-item" href="mailto:hello@example.com" aria-label="Email">✉</a>
+  </aside>
+
+  <main id="main">
+    <section id="home" class="hero">
+      <div class="hero-sheen" aria-hidden="true"></div>
+      <div class="container hero-layout">
+        <div class="hero-left reveal">
+          <div class="eyebrow"><span class="pulse"></span> LAW × TECHNOLOGY</div>
+          <h1>TECHNOLOGY<br><span>× LAW</span></h1>
+          <p class="hero-sub">
+            Exploring the intersection of law, technology, and systems
+            to build a better digital society.
+          </p>
+
+          <div class="terminal-line">
+            <span class="prompt">&gt;</span>
+            <code id="typed">const purpose = "Build, Learn, Contribute";</code>
+            <b></b>
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn primary magnetic" href="#projects">EXPLORE MY WORK <strong>→</strong></a>
+            <a class="btn secondary magnetic" href="#about">ABOUT ME <strong>♙</strong></a>
+          </div>
+
+          <div class="meta">
+            <span><b>STATUS</b> ONLINE</span>
+            <span><b>MODE</b> EXPLORING</span>
+            <span><b>FOCUS</b> LAW / TECH / SYSTEMS</span>
+          </div>
+        </div>
+
+        <div class="hero-right reveal" data-tilt>
+          <div class="hero-art">
+            <img src="assets/themis-hero.png" alt="Dark futuristic Lady Themis artwork representing justice and technology">
+            <div class="art-overlay"></div>
+            <div class="rings" aria-hidden="true"></div>
+          </div>
+
+          <div class="quote floating">
+            <span>“</span>
+            <p>Justice is not<br>just about law,<br>it’s about impact<br>on human life.</p>
+            <small>— Dika</small>
+          </div>
+
+          <div class="status-card floating">
+            <header><span class="green"></span>SYSTEM STATUS</header>
+            <small>FOCUS MODE</small>
+            <strong>DEEP WORK</strong>
+            <div class="bar"><i></i></div>
+            <em>95%</em>
+          </div>
+
+          <div class="scroll-cue"><span>!</span><small>SCROLL<br>DOWN</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="dashboard">
+      <div class="container dashboard-main">
+        <article class="focus-card reveal">
+          <div class="focus-icon">⚖</div>
+          <h2>LAW</h2>
+          <p>Understanding legal systems, rights, and justice in society.</p>
+          <a href="#lawtech">↗</a>
+        </article>
+
+        <article class="focus-card reveal">
+          <div class="focus-icon code">&lt;/&gt;</div>
+          <h2>TECHNOLOGY</h2>
+          <p>Building digital solutions with code, design, and data.</p>
+          <a href="#projects">↗</a>
+        </article>
+
+        <article class="focus-card reveal">
+          <div class="focus-icon">⌘</div>
+          <h2>SYSTEMS</h2>
+          <p>Exploring how laws, tech, and people interact as systems.</p>
+          <a href="#experiments">↗</a>
+        </article>
+
+        <article class="focus-card reveal">
+          <div class="focus-icon">✧</div>
+          <h2>IMPACT</h2>
+          <p>Creating meaningful outcomes through ideas and innovation.</p>
+          <a href="#thoughts">↗</a>
+        </article>
+
+        <article id="experiments" class="build-card reveal">
+          <div class="terminal-head">
+            <span><b>›</b> CURRENTLY BUILDING</span>
+            <div class="leds"><i></i><i></i><i></i></div>
+          </div>
+          <div class="builds">
+            <div><small>01</small><strong>GUSTAVO Quant Terminal 1.0</strong><em class="active">ACTIVE</em></div>
+            <div><small>02</small><strong>Coconut ERP Dashboard</strong><em class="active">ACTIVE</em></div>
+            <div><small>03</small><strong>Plastic to Fuel Research</strong><em class="research">RESEARCH</em></div>
+            <div><small>04</small><strong>Law × Tech Knowledge Base</strong><em class="plan">PLANNING</em></div>
+            <div><small>05</small><strong>DedSec Personal OS</strong><em class="active">ACTIVE</em></div>
+            <div><small>06</small><strong>AI Tools &amp; Automation</strong><em class="research">RESEARCH</em></div>
+          </div>
+          <div class="terminal-foot">&gt; Building in public. Learning in private.<i></i></div>
+        </article>
+
+        <section class="tool-shell reveal">
+          <div class="tools-area">
+            <div class="tools-title"><span class="pulse"></span> TOOLS &amp; TECHNOLOGIES</div>
+            <div class="tools">
+              <div class="tool"><b>Py</b><small>Python</small></div>
+              <div class="tool"><b>JS</b><small>JavaScript</small></div>
+              <div class="tool"><b>TS</b><small>TypeScript</small></div>
+              <div class="tool"><b>R</b><small>React</small></div>
+              <div class="tool"><b>N</b><small>Next.js</small></div>
+              <div class="tool"><b>≋</b><small>Tailwind</small></div>
+              <div class="tool"><b>n8</b><small>Node.js</small></div>
+              <div class="tool"><b>PG</b><small>PostgreSQL</small></div>
+              <div class="tool"><b>◫</b><small>Docker</small></div>
+              <div class="tool"><b>G</b><small>Git</small></div>
+              <div class="tool"><b>⌁</b><small>Linux</small></div>
+              <div class="tool"><b>St</b><small>Streamlit</small></div>
+            </div>
+          </div>
+
+          <aside class="focus-area">
+            <div>FOCUS AREAS</div>
+            <ul>
+              <li>AI &amp; Automation</li>
+              <li>Data &amp; Analytics</li>
+              <li>Web Development</li>
+              <li>Legal Tech</li>
+            </ul>
+          </aside>
+        </section>
+      </div>
+    </section>
+
+    <section id="lawtech" class="section">
+      <div class="container content-grid reveal">
+        <div class="section-id">02 / LAW × TECH</div>
+        <div>
+          <h2>Not two interests.<br><span>One intersection.</span></h2>
+          <p>Technology changes what people can do. Law shapes what they should be allowed to do. I’m interested in the system between those two.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="container">
+        <div class="section-title reveal"><span>03 / PROJECTS</span><h2>Selected builds.</h2></div>
+        <div class="project-grid">
+          <article class="project reveal"><span>01 / QUANT · AI · WEB</span><h3>GUSTAVO Quant Terminal</h3><p>Prediction, market data, analytics, and dashboard tooling assembled into an experimental terminal.</p><div class="tags"><i>Python</i><i>SQLite</i><i>Streamlit</i><i>AI</i></div></article>
+          <article class="project reveal"><span>02 / BUSINESS SYSTEM</span><h3>Coconut ERP</h3><p>Inventory, accounting, and reporting workflows designed for a small local operation.</p><div class="tags"><i>ERP</i><i>Automation</i><i>Dashboard</i></div></article>
+          <article class="project reveal"><span>03 / LAW × TECH</span><h3>Digital Law Notes</h3><p>A future knowledge base connecting legal concepts with AI, software, privacy, and governance.</p><div class="tags"><i>Legal Tech</i><i>Research</i><i>Knowledge</i></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="thoughts" class="section">
+      <div class="container">
+        <div class="section-title reveal"><span>04 / THOUGHTS</span><h2>Things I’m thinking about.</h2></div>
+        <div class="thoughts">
+          <article class="thought reveal"><span>LAW / TECH</span><h3>Who gets to decide what technology is allowed to do?</h3></article>
+          <article class="thought reveal"><span>SYSTEMS</span><h3>The interesting bug is often the assumption underneath.</h3></article>
+          <article class="thought reveal"><span>BUILDING</span><h3>Useful beats impressive.</h3></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact">
+      <div class="container contact-card reveal">
+        <div><span>06 / CONNECT</span><h2>Let’s build something<br><b>worth understanding.</b></h2></div>
+        <a class="btn primary magnetic" href="https://instagram.com/kwdkaa" target="_blank" rel="noopener noreferrer">OPEN INSTAGRAM ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-row"><span>© <span id="year"></span> DIKA — TECHNOLOGY × LAW</span><span>BUILT WITH ♡ &amp; CODE</span></div>
+  </footer>
+  <script src="js/app.js" defer></script>
+</body>
+</html>
