@@ -16,21 +16,33 @@ $("#motionBtn")?.addEventListener("click",()=>{
 });
 
 const menuBtn=$("#menuBtn"), mobileMenu=$("#mobileMenu");
+const menuOpenIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
+const menuCloseIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 menuBtn?.addEventListener("click",()=>{
   const open=mobileMenu.classList.toggle("open");
   mobileMenu.setAttribute("aria-hidden",String(!open));
   menuBtn.setAttribute("aria-expanded",String(open));
+  menuBtn.setAttribute("aria-label",open ? "Close navigation" : "Open navigation");
+  menuBtn.innerHTML=open ? menuCloseIcon : menuOpenIcon;
+  document.body.classList.toggle("menu-open",open);
 });
+
 $$(".mobile-menu a").forEach(a=>a.addEventListener("click",()=>{
   mobileMenu.classList.remove("open");
   mobileMenu.setAttribute("aria-hidden","true");
   menuBtn?.setAttribute("aria-expanded","false");
+  menuBtn?.setAttribute("aria-label","Open navigation");
+  if(menuBtn)menuBtn.innerHTML=menuOpenIcon;
+  document.body.classList.remove("menu-open");
 }));
 addEventListener("keydown",e=>{
   if(e.key==="Escape"){
     mobileMenu?.classList.remove("open");
     mobileMenu?.setAttribute("aria-hidden","true");
     menuBtn?.setAttribute("aria-expanded","false");
+    menuBtn?.setAttribute("aria-label","Open navigation");
+    if(menuBtn)menuBtn.innerHTML=menuOpenIcon;
+    document.body.classList.remove("menu-open");
   }
 });
 
