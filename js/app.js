@@ -27,7 +27,11 @@ function setMotion(next){
   else $$(".reveal").forEach(el=>{el.style.opacity="";el.style.transform="";});
   syncMotionUI();
 }
-motionBtn?.addEventListener("click",()=>setMotion(!motionOn));
+motionBtn?.addEventListener("click",()=>{
+  setMotion(!motionOn);
+  const label=motionOn?"VISUAL EFFECTS ON":"VISUAL EFFECTS OFF";
+  motionBtn.setAttribute("aria-label",label);
+});
 syncMotionUI();
 
 const menuBtn=$("#menuBtn"), mobileMenu=$("#mobileMenu");
@@ -66,7 +70,9 @@ if("IntersectionObserver"in window&&!reduce){
   reveals.forEach(el=>io.observe(el));
 }else reveals.forEach(el=>el.classList.add("is-visible"));
 
-const navTargets=[...new Set($$("main [id]"))], nav=$$(".nav a"), rail=$$(".rail-item");
+const nav=$$(".nav a"), rail=$$(".rail-item");
+const navTargetIds=new Set([...nav,...rail].map(a=>a.getAttribute("href")).filter(h=>h?.startsWith("#")));
+const navTargets=[...navTargetIds].map(id=>document.getElementById(id.slice(1))).filter(Boolean);
 if("IntersectionObserver"in window){
   const secObs=new IntersectionObserver(entries=>{
     entries.forEach(entry=>{
