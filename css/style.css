@@ -1033,10 +1033,7 @@ html{
 .themis-mascot.is-ready .mascot-frame{animation:mascotFrameIn 1.05s .15s var(--ease) forwards}
 .themis-mascot.is-ready .mascot-intro{animation:mascotIntro 850ms .45s var(--ease) forwards}
 .themis-mascot:hover img{filter:brightness(.94) contrast(1.10) saturate(.96)}
-@keyframes mascotFloat{
-  0%,100%{transform:translate3d(0,0,0) scale(1.018) rotate(0deg)}
-  50%{transform:translate3d(0,-5px,0) scale(1.028) rotate(.15deg)}
-}
+
 @keyframes mascotFrameIn{
   0%{opacity:0;transform:scale(.92)}
   60%{opacity:1;transform:scale(1.01)}
@@ -1064,4 +1061,304 @@ html{
     animation:none!important;transition:none!important
   }
   .themis-mascot img{transform:none!important}
+}
+
+/* V21 slower, readable boot sequence */
+.boot{
+  transition:opacity 1000ms cubic-bezier(.22,1,.36,1),visibility 1000ms linear;
+}
+.boot.is-done{opacity:0;visibility:hidden;pointer-events:none}
+.boot-core{animation:bootCoreIn 900ms cubic-bezier(.22,1,.36,1) both}
+.boot-brand{animation:bootBrandIn 900ms 250ms cubic-bezier(.22,1,.36,1) both}
+.boot-line:nth-child(2){animation:bootRow 700ms 900ms both}
+.boot-line:nth-child(3){animation:bootRow 700ms 1450ms both}
+.boot-line:nth-child(4){animation:bootRow 700ms 2000ms both}
+.boot-core::after{
+  content:"";
+  display:block;
+  height:2px;
+  margin-top:18px;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);
+}
+.boot-core::before{
+  content:"";
+  position:absolute;
+  width:min(372px,calc(100vw - 86px));
+  height:2px;
+  margin-top:122px;
+  border-radius:999px;
+  background:linear-gradient(90deg,transparent,var(--gold2),transparent);
+  transform:scaleX(0);
+  transform-origin:left center;
+  animation:bootProgress 2900ms 150ms cubic-bezier(.22,1,.36,1) forwards;
+}
+@keyframes bootCoreIn{
+  from{opacity:0;transform:translateY(18px) scale(.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes bootBrandIn{
+  from{opacity:0;letter-spacing:.16em;transform:translateY(8px)}
+  to{opacity:1;letter-spacing:.08em;transform:translateY(0)}
+}
+@keyframes bootProgress{
+  0%{transform:scaleX(0)}
+  78%{transform:scaleX(.82)}
+  100%{transform:scaleX(1)}
+}
+@media(max-width:640px){
+  .boot-core::before{margin-top:128px;width:calc(100vw - 86px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .boot-core,.boot-brand,.boot-line:nth-child(2),.boot-line:nth-child(3),.boot-line:nth-child(4),.boot-core::before{animation:none!important}
+}
+
+/* V22 — Themis "awakening" entrance: artifact -> energy -> mascot */
+.mascot-awaken{
+  position:absolute;
+  inset:0;
+  z-index:8;
+  pointer-events:none;
+  opacity:1;
+  overflow:hidden;
+}
+.mascot-awaken .awakening-core{
+  position:absolute;
+  left:50%;
+  top:53%;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--gold2);
+  box-shadow:
+    0 0 8px rgba(243,207,120,.9),
+    0 0 24px rgba(217,173,85,.55),
+    0 0 70px rgba(217,173,85,.22);
+  transform:translate(-50%,-50%) scale(.2);
+}
+.awakening-line{
+  position:absolute;
+  left:50%;
+  width:72%;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(243,207,120,.8),transparent);
+  opacity:0;
+  transform:translateX(-50%) scaleX(.1);
+}
+.awakening-line-top{top:37%}
+.awakening-line-bottom{top:66%}
+.awakening-bolt{
+  position:absolute;
+  width:1px;
+  height:44%;
+  left:50%;
+  top:18%;
+  transform-origin:50% 100%;
+  opacity:0;
+  background:linear-gradient(180deg,transparent,rgba(243,207,120,.95) 56%,transparent);
+  filter:drop-shadow(0 0 7px rgba(243,207,120,.42));
+}
+.bolt-a{transform:rotate(-18deg)}
+.bolt-b{transform:rotate(18deg)}
+.awakening-spark{
+  position:absolute;
+  width:3px;
+  height:3px;
+  border-radius:50%;
+  background:#fff8da;
+  opacity:0;
+  box-shadow:
+    0 0 8px rgba(243,207,120,.9),
+    0 0 18px rgba(217,173,85,.45);
+}
+.spark-a{left:42%;top:43%}
+.spark-b{left:59%;top:57%}
+
+.themis-mascot.is-awakening .mascot-awaken{
+  animation:awakeningFade 1500ms 1250ms var(--ease) forwards;
+}
+.themis-mascot.is-awakening .awakening-core{
+  animation:awakeningCore 1050ms 150ms var(--ease) forwards;
+}
+.themis-mascot.is-awakening .awakening-line{
+  animation:awakeningLine 900ms 420ms var(--ease) forwards;
+}
+.themis-mascot.is-awakening .bolt-a{
+  animation:awakeningBoltA 1050ms 170ms var(--ease) forwards;
+}
+.themis-mascot.is-awakening .bolt-b{
+  animation:awakeningBoltB 1050ms 250ms var(--ease) forwards;
+}
+.themis-mascot.is-awakening .spark-a{
+  animation:awakeningSparkA 900ms 520ms var(--ease) forwards;
+}
+.themis-mascot.is-awakening .spark-b{
+  animation:awakeningSparkB 900ms 690ms var(--ease) forwards;
+}
+.themis-mascot.is-awakening img{
+  opacity:0;
+  transform:translate3d(0,12px,0) scale(1.045);
+  filter:brightness(.82) contrast(1.08) saturate(.72);
+  animation:themisReveal 1450ms 760ms var(--ease) forwards;
+}
+.themis-mascot.is-awakening .mascot-frame,
+.themis-mascot.is-awakening .mascot-intro,
+.themis-mascot.is-awakening .mascot-ring,
+.themis-mascot.is-awakening .mascot-beam{
+  opacity:0;
+}
+@keyframes awakeningCore{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+  18%{opacity:1;transform:translate(-50%,-50%) scale(1.4)}
+  28%{opacity:.7;transform:translate(-50%,-50%) scale(.85)}
+  45%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+}
+@keyframes awakeningLine{
+  0%{opacity:0;transform:translateX(-50%) scaleX(.1)}
+  45%{opacity:.95;transform:translateX(-50%) scaleX(1)}
+  100%{opacity:0;transform:translateX(-50%) scaleX(1)}
+}
+@keyframes awakeningBoltA{
+  0%{opacity:0;transform:rotate(-18deg) scaleY(.1)}
+  18%{opacity:1;transform:rotate(-18deg) scaleY(1)}
+  30%{opacity:.22;transform:rotate(-18deg) scaleY(.92)}
+  42%{opacity:.95;transform:rotate(-18deg) scaleY(1)}
+  100%{opacity:0;transform:rotate(-18deg) scaleY(1)}
+}
+@keyframes awakeningBoltB{
+  0%{opacity:0;transform:rotate(18deg) scaleY(.1)}
+  24%{opacity:1;transform:rotate(18deg) scaleY(1)}
+  36%{opacity:.18;transform:rotate(18deg) scaleY(.9)}
+  48%{opacity:.85;transform:rotate(18deg) scaleY(1)}
+  100%{opacity:0;transform:rotate(18deg) scaleY(1)}
+}
+@keyframes awakeningSparkA{
+  0%{opacity:0;transform:translate3d(0,0,0) scale(.3)}
+  30%{opacity:1;transform:translate3d(-15px,-22px,0) scale(1)}
+  100%{opacity:0;transform:translate3d(-24px,-52px,0) scale(.2)}
+}
+@keyframes awakeningSparkB{
+  0%{opacity:0;transform:translate3d(0,0,0) scale(.3)}
+  35%{opacity:1;transform:translate3d(17px,-14px,0) scale(1)}
+  100%{opacity:0;transform:translate3d(35px,-44px,0) scale(.2)}
+}
+
+@keyframes awakeningFade{
+  0%{opacity:1}
+  55%{opacity:.65}
+  100%{opacity:0}
+}
+@media(max-width:640px){
+  .awakening-bolt{height:38%}
+  .awakening-line{width:78%}
+}
+@media(prefers-reduced-motion:reduce){
+  .mascot-awaken{display:none!important}
+  .themis-mascot.is-awakening .mascot-frame,
+  .themis-mascot.is-awakening .mascot-intro,
+  .themis-mascot.is-awakening .mascot-ring,
+  .themis-mascot.is-awakening .mascot-beam{
+    opacity:1!important;
+  }
+  .themis-mascot.is-awakening img{
+    animation:none!important;
+    opacity:1!important;
+    transform:none!important;
+    filter:none!important;
+  }
+}
+
+/* V23 refined motion choreography */
+:root{
+  --ease-smooth:cubic-bezier(.22,1,.36,1);
+  --ease-soft:cubic-bezier(.33,1,.68,1);
+}
+.themis-mascot{
+  --mascot-x:0px;
+  --mascot-y:0px;
+  --mascot-rotate:0deg;
+  --mascot-scale:1;
+}
+.themis-mascot img{
+  transform:translate3d(var(--mascot-x),var(--mascot-y),0) scale(var(--mascot-scale)) rotate(var(--mascot-rotate));
+  transition:transform 900ms var(--ease-smooth),filter 700ms ease;
+  will-change:transform,opacity;
+}
+.themis-mascot.is-awakening .mascot-frame,
+.themis-mascot.is-awakening .mascot-intro,
+.themis-mascot.is-awakening .mascot-ring,
+.themis-mascot.is-awakening .mascot-beam{
+  opacity:0;
+}
+.themis-mascot.is-awakening .mascot-awaken{
+  animation:awakeningFade 1700ms 1550ms var(--ease-smooth) forwards;
+}
+.themis-mascot.is-awakening .awakening-core{
+  animation:awakeningCore 1200ms 120ms var(--ease-smooth) forwards;
+}
+.themis-mascot.is-awakening .awakening-line{
+  animation:awakeningLine 900ms 450ms var(--ease-smooth) forwards;
+}
+.themis-mascot.is-awakening .bolt-a{animation:awakeningBoltA 1100ms 180ms var(--ease-smooth) forwards}
+.themis-mascot.is-awakening .bolt-b{animation:awakeningBoltB 1100ms 300ms var(--ease-smooth) forwards}
+.themis-mascot.is-awakening .spark-a{animation:awakeningSparkA 950ms 560ms var(--ease-smooth) forwards}
+.themis-mascot.is-awakening .spark-b{animation:awakeningSparkB 950ms 700ms var(--ease-smooth) forwards}
+.themis-mascot.is-awakening img{
+  animation:themisReveal 1450ms 820ms var(--ease-smooth) forwards;
+}
+.themis-mascot.is-ready:not(.is-awakening) img{
+  animation:mascotFloat 9s var(--ease-soft) infinite;
+}
+.mascot-frame,
+.mascot-ring,
+.mascot-beam,
+.frame-scan{
+  will-change:transform,opacity;
+}
+.boot,
+.section-hud,
+.hero-art,
+.hero-right,
+.project,
+.focus-card,
+.tool{
+  backface-visibility:hidden;
+}
+.project,
+.focus-card,
+.tool{
+  contain:paint;
+}
+@keyframes mascotFloat{
+  0%,100%{transform:translate3d(0,0,0) scale(1.018) rotate(0deg)}
+  50%{transform:translate3d(0,-4px,0) scale(1.024) rotate(.10deg)}
+}
+@keyframes themisReveal{
+  0%{opacity:0;transform:translate3d(0,12px,0) scale(1.055);filter:brightness(.78) contrast(1.08) saturate(.68)}
+  42%{opacity:.36;transform:translate3d(0,6px,0) scale(1.038);filter:brightness(1.06) contrast(1.06) saturate(.82)}
+  70%{opacity:.82;transform:translate3d(0,2px,0) scale(1.023);filter:brightness(.96) contrast(1.08) saturate(.91)}
+  100%{opacity:1;transform:translate3d(var(--mascot-x),var(--mascot-y),0) scale(1.018) rotate(var(--mascot-rotate));filter:brightness(.88) contrast(1.08) saturate(.90)}
+}
+@media(max-width:640px){
+  .themis-mascot.is-ready:not(.is-awakening) img{animation-duration:10.5s}
+}
+@media(prefers-reduced-motion:reduce){
+  .themis-mascot.is-ready img,
+  .themis-mascot.is-awakening img,
+  .themis-mascot.is-awakening .mascot-frame,
+  .themis-mascot.is-awakening .mascot-intro,
+  .themis-mascot.is-awakening .mascot-ring,
+  .themis-mascot.is-awakening .mascot-beam,
+  .themis-mascot.is-awakening .mascot-awaken,
+  .themis-mascot.is-awakening .awakening-core,
+  .themis-mascot.is-awakening .awakening-line,
+  .themis-mascot.is-awakening .awakening-bolt,
+  .themis-mascot.is-awakening .awakening-spark{
+    animation:none!important;
+    transition:none!important;
+  }
+  .themis-mascot img{transform:none!important;opacity:1!important;filter:none!important}
 }
