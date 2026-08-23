@@ -1,147 +1,7 @@
-const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const motionOn=!reduce;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 $("#year").textContent=new Date().getFullYear();
-
-let motionOn=!reduce;
-const motionBtn=$("#motionBtn");
-function syncMotionUI(){
-  if(!motionBtn)return;
-  const state=motionOn?"ON":"OFF";
-  const label=motionOn?"Disable visual effects":"Enable visual effects";
-  motionBtn.setAttribute("aria-label",label);
-  motionBtn.setAttribute("title",label);
-  motionBtn.setAttribute("aria-pressed",String(motionOn));
-  const stateEl=motionBtn.querySelector("b");
-  if(stateEl)stateEl.textContent=state;
-}
-function setMotion(next){
-  motionOn=Boolean(next);
-  document.body.classList.toggle("motion-off",!motionOn);
-  if(!motionOn){
-    $$(".reveal").forEach(el=>{el.classList.add("is-visible");el.style.opacity="1";el.style.transform="none";});
-    $$("[data-tilt],.magnetic").forEach(el=>{el.style.transform="none";});
-  }else{
-    $$(".reveal").forEach(el=>{el.style.opacity="";el.style.transform="";});
-  }
-  syncMotionUI();
-}
-motionBtn?.addEventListener("click",()=>{
-  setMotion(!motionOn);
-  const label=motionOn?"VISUAL EFFECTS ON":"VISUAL EFFECTS OFF";
-  motionBtn.setAttribute("aria-label",label);
-});
-syncMotionUI();
-
-const menuBtn=$("#menuBtn"), mobileMenu=$("#mobileMenu");
-const menuOpenIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
-const menuCloseIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
-let lockedScrollY=0;
-
-function setMenu(open){
-  if(!mobileMenu||!menuBtn)return;
-
-  if(open){
-    lockedScrollY=window.scrollY||window.pageYOffset||0;
-    document.body.classList.add("menu-open");
-    document.body.style.top=`-${lockedScrollY}px`;
-    document.body.style.width="100%";
-    mobileMenu.classList.add("open");
-    mobileMenu.setAttribute("aria-hidden","false");
-    menuBtn.setAttribute("aria-expanded","true");
-    menuBtn.setAttribute("aria-label","Close navigation");
-    menuBtn.innerHTML=menuCloseIcon;
-    return;
-  }
-
-  const restoreY=lockedScrollY;
-  mobileMenu.classList.remove("open");
-  mobileMenu.setAttribute("aria-hidden","true");
-  menuBtn.setAttribute("aria-expanded","false");
-  menuBtn.setAttribute("aria-label","Open navigation");
-  menuBtn.innerHTML=menuOpenIcon;
-  document.body.classList.remove("menu-open");
-  document.body.style.top="";
-  document.body.style.width="";
-  requestAnimationFrame(()=>window.scrollTo({top:restoreY,left:0,behavior:"auto"}));
-}
-
-menuBtn?.addEventListener("click",()=>setMenu(!mobileMenu.classList.contains("open")));
-
-$$(".mobile-menu a").forEach(link=>{
-  link.addEventListener("click",event=>{
-    const selector=link.getAttribute("href");
-    const target=selector?document.querySelector(selector):null;
-    if(!target)return;
-    event.preventDefault();
-
-    const currentY=target.getBoundingClientRect().top+window.scrollY;
-    mobileMenu.classList.remove("open");
-    mobileMenu.setAttribute("aria-hidden","true");
-    menuBtn.setAttribute("aria-expanded","false");
-    menuBtn.setAttribute("aria-label","Open navigation");
-    menuBtn.innerHTML=menuOpenIcon;
-    document.body.classList.remove("menu-open");
-    document.body.style.top="";
-    document.body.style.width="";
-
-    requestAnimationFrame(()=>{
-      const headerOffset=window.innerWidth<=640?78:88;
-      window.scrollTo({top:Math.max(0,currentY-headerOffset),left:0,behavior:"smooth"});
-    });
-  });
-});
-
-document.addEventListener("pointerdown",event=>{
-  if(!mobileMenu.classList.contains("open"))return;
-  const clickedInside=mobileMenu.contains(event.target)||menuBtn.contains(event.target);
-  if(!clickedInside)setMenu(false);
-});
-
-document.addEventListener("keydown",event=>{
-  if(event.key==="Escape")setMenu(false);
-});
-
-window.addEventListener("resize",()=>{
-  if(window.innerWidth>980&&mobileMenu.classList.contains("open"))setMenu(false);
-});
-
-
-const hero = $(".hero-right");
-const progressBar = $(".scroll-progress");
-function updateScrollFx(){
-  const doc=document.documentElement;
-  const max=doc.scrollHeight-window.innerHeight;
-  const p=max>0 ? window.scrollY/max : 0;
-  if(progressBar) progressBar.style.transform=`scaleX(${p})`;
-  if(!reduce && motionOn && hero && window.innerWidth>640){
-    const rect=hero.getBoundingClientRect();
-    const offset=Math.max(-1,Math.min(1,(window.innerHeight*.5-rect.top-rect.height*.5)/(rect.height*.75)));
-    hero.style.setProperty("--parallax-y",`${offset*10}px`);
-  }else if(hero){
-    hero.style.setProperty("--parallax-y","0px");
-  }
-}
-window.addEventListener("scroll",updateScrollFx,{passive:true});
-window.addEventListener("resize",updateScrollFx);
-
-
-const interactiveGlow = $$(".focus-card,.project,.tool,.contact-card");
-if(!reduce){
-  interactiveGlow.forEach(card=>{
-    card.addEventListener("pointermove",e=>{
-      if(!motionOn)return;
-      const r=card.getBoundingClientRect();
-      const px=(e.clientX-r.left)/r.width*100;
-      const py=(e.clientY-r.top)/r.height*100;
-      card.style.setProperty("--px",`${px}%`);
-      card.style.setProperty("--py",`${py}%`);
-    },{passive:true});
-    card.addEventListener("pointerleave",()=>{
-      card.style.removeProperty("--px");
-      card.style.removeProperty("--py");
-    });
-  });
-}
 
 const orb=$(".pointer-light");
 if(!reduce&&orb)addEventListener("pointermove",e=>{
@@ -188,31 +48,12 @@ addEventListener("resize",updateActiveNav,{passive:true});
 updateActiveNav();
 
 if(!reduce){
-  $$(".magnetic").forEach(btn=>{
-    btn.addEventListener("pointermove",e=>{
-      if(!motionOn)return;
-      const r=btn.getBoundingClientRect();
-      const x=((e.clientX-r.left)/r.width-.5)*6;
-      const y=((e.clientY-r.top)/r.height-.5)*4;
-      btn.style.transform=`translate(${x}px,${y}px)`;
-    },{passive:true});
-    btn.addEventListener("pointerleave",()=>btn.style.transform="");
-  });
-
-  const art=$("[data-tilt]");
-  art?.addEventListener("pointermove",e=>{
-    if(!motionOn)return;
-    const r=art.getBoundingClientRect();
-    const x=(e.clientX-r.left)/r.width-.5;
-    const y=(e.clientY-r.top)/r.height-.5;
-    art.style.setProperty("--tilt-x",`${y*-1.5}deg`);
-    art.style.setProperty("--tilt-y",`${x*1.9}deg`);
-  },{passive:true});
-
-  art?.addEventListener("pointerleave",()=>{
-    art.style.setProperty("--tilt-x","0deg");
-    art.style.setProperty("--tilt-y","0deg");
-  });
+  const magneticButtons=$$(".magnetic"), art=$("[data-tilt]"), cards=$$(".focus-card,.project,.tool,.contact-card"), targets=new WeakMap();
+  magneticButtons.forEach(btn=>{targets.set(btn,{x:0,y:0,tx:0,ty:0});btn.addEventListener("pointermove",e=>{const s=targets.get(btn),r=btn.getBoundingClientRect();s.tx=((e.clientX-r.left)/r.width-.5)*6;s.ty=((e.clientY-r.top)/r.height-.5)*4},{passive:true});btn.addEventListener("pointerleave",()=>{const s=targets.get(btn);s.tx=0;s.ty=0})});
+  art?.addEventListener("pointermove",e=>{const r=art.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;art.style.setProperty("--tilt-x",`${y*-1.35}deg`);art.style.setProperty("--tilt-y",`${x*1.75}deg`)},{passive:true});
+  art?.addEventListener("pointerleave",()=>{art.style.setProperty("--tilt-x","0deg");art.style.setProperty("--tilt-y","0deg")});
+  cards.forEach(card=>{card.addEventListener("pointermove",e=>{const r=card.getBoundingClientRect();card.style.setProperty("--px",`${((e.clientX-r.left)/r.width)*100}%`);card.style.setProperty("--py",`${((e.clientY-r.top)/r.height)*100}%`)},{passive:true});card.addEventListener("pointerleave",()=>{card.style.removeProperty("--px");card.style.removeProperty("--py")})});
+  const animateMotion=()=>{magneticButtons.forEach(btn=>{const s=targets.get(btn);s.x+=(s.tx-s.x)*.12;s.y+=(s.ty-s.y)*.12;btn.style.transform=`translate3d(${s.x}px,${s.y}px,0)`});requestAnimationFrame(animateMotion)};requestAnimationFrame(animateMotion);
 }
 
 const type=$("#typed"), phrases=[
@@ -255,5 +96,39 @@ if (!reduce) {
     card.addEventListener("pointerleave", () => {
       card.style.backgroundImage = "";
     });
+  });
+}
+
+const boot=$("#boot");
+if(boot){const finishBoot=()=>setTimeout(()=>boot.classList.add("is-done"),850);if(document.readyState==="complete")finishBoot();else addEventListener("load",finishBoot,{once:true})}
+
+const hudIndex=$("#hudIndex"),hudName=$("#hudName");
+const hudTargets=[["home","HOME"],["about","ABOUT"],["lawtech","LAW × TECH"],["projects","PROJECTS"],["thoughts","THOUGHTS"],["contact","CONTACT"]].map(([id,name])=>({el:document.getElementById(id),id,name})).filter(x=>x.el);
+function updateHud(){if(!hudIndex||!hudName)return;const marker=window.scrollY+window.innerHeight*.35;let current=hudTargets[0];for(const item of hudTargets)if(item.el.offsetTop<=marker)current=item;const index=Math.max(1,hudTargets.findIndex(x=>x.id===current.id)+1);hudIndex.textContent=String(index).padStart(2,"0");hudName.textContent=current.name}
+addEventListener("scroll",updateHud,{passive:true});addEventListener("resize",updateHud);updateHud();
+const focusGroup=document.querySelector(".focus-group");
+if(focusGroup){const cards=[...focusGroup.querySelectorAll(".project")];cards.forEach(card=>{card.addEventListener("pointerenter",()=>{focusGroup.classList.add("has-focus");card.classList.add("is-focus")});card.addEventListener("pointerleave",()=>{focusGroup.classList.remove("has-focus");card.classList.remove("is-focus")})})}
+
+/* V19 mascot lifecycle */
+const mascot=document.querySelector(".themis-mascot");
+const mascotImg=mascot?.querySelector("img");
+if(mascot&&mascotImg){
+  const ready=()=>mascot.classList.add("is-ready");
+  if(mascotImg.complete&&mascotImg.naturalWidth>0)ready();
+  else mascotImg.addEventListener("load",ready,{once:true});
+}
+if(!reduce&&mascot){
+  mascot.addEventListener("pointermove",e=>{
+    const r=mascot.getBoundingClientRect();
+    const nx=(e.clientX-r.left)/r.width-.5;
+    const ny=(e.clientY-r.top)/r.height-.5;
+    mascot.style.setProperty("--mascot-x",`${nx*4}px`);
+    mascot.style.setProperty("--mascot-y",`${ny*3}px`);
+    mascot.style.setProperty("--mascot-rotate",`${nx*.18}deg`);
+  },{passive:true});
+  mascot.addEventListener("pointerleave",()=>{
+    mascot.style.setProperty("--mascot-x","0px");
+    mascot.style.setProperty("--mascot-y","0px");
+    mascot.style.setProperty("--mascot-rotate","0deg");
   });
 }
