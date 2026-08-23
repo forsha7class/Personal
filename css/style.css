@@ -1345,3 +1345,31 @@ html{
     z-index:4;
   }
 }
+
+/* V28 boot overlay anchoring fix */
+.boot-core{
+  position:relative;
+  box-sizing:border-box;
+  overflow:hidden;
+  width:min(420px,calc(100% - 48px));
+}
+.boot-core::before{
+  left:24px;
+  right:24px;
+  bottom:18px;
+  width:auto;
+  margin-top:0;
+}
+@media(max-width:640px){
+  .boot-core{
+    width:calc(100% - 36px);
+    padding:20px;
+  }
+  .boot-core::before{
+    left:20px;
+    right:20px;
+    bottom:17px;
+    width:auto;
+    margin-top:0;
+  }
+}
