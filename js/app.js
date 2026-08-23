@@ -100,7 +100,7 @@ if (!reduce) {
 }
 
 const boot=$("#boot");
-if(boot){const finishBoot=()=>setTimeout(()=>boot.classList.add("is-done"),850);if(document.readyState==="complete")finishBoot();else addEventListener("load",finishBoot,{once:true})}
+if(boot){const finishBoot=()=>setTimeout(()=>boot.classList.add("is-done"),4200);if(document.readyState==="complete")finishBoot();else addEventListener("load",finishBoot,{once:true})}
 
 const hudIndex=$("#hudIndex"),hudName=$("#hudName");
 const hudTargets=[["home","HOME"],["about","ABOUT"],["lawtech","LAW × TECH"],["projects","PROJECTS"],["thoughts","THOUGHTS"],["contact","CONTACT"]].map(([id,name])=>({el:document.getElementById(id),id,name})).filter(x=>x.el);
@@ -109,26 +109,38 @@ addEventListener("scroll",updateHud,{passive:true});addEventListener("resize",up
 const focusGroup=document.querySelector(".focus-group");
 if(focusGroup){const cards=[...focusGroup.querySelectorAll(".project")];cards.forEach(card=>{card.addEventListener("pointerenter",()=>{focusGroup.classList.add("has-focus");card.classList.add("is-focus")});card.addEventListener("pointerleave",()=>{focusGroup.classList.remove("has-focus");card.classList.remove("is-focus")})})}
 
-/* V19 mascot lifecycle */
+/* V22 mascot awakening lifecycle */
 const mascot=document.querySelector(".themis-mascot");
 const mascotImg=mascot?.querySelector("img");
 if(mascot&&mascotImg){
-  const ready=()=>mascot.classList.add("is-ready");
-  if(mascotImg.complete&&mascotImg.naturalWidth>0)ready();
+  const ready=()=>{
+    mascot.classList.add("is-ready");
+    if(!reduce){
+      mascot.classList.add("is-awakening");
+      window.setTimeout(()=>mascot.classList.remove("is-awakening"),3400);
+    }
+  };
+  if(mascotImg.complete&&mascotImg.naturalWidth>0) ready();
   else mascotImg.addEventListener("load",ready,{once:true});
 }
 if(!reduce&&mascot){
+  const mascotTarget={x:0,y:0,rx:0,ry:0};
+  let mascotFrame=0;
+  const tickMascot=()=>{
+    mascotTarget.x+=(mascotTarget.rx-mascotTarget.x)*.12;
+    mascotTarget.y+=(mascotTarget.ry-mascotTarget.y)*.12;
+    mascot.style.setProperty("--mascot-x",`${mascotTarget.x}px`);
+    mascot.style.setProperty("--mascot-y",`${mascotTarget.y}px`);
+    mascot.style.setProperty("--mascot-rotate",`${mascotTarget.x*.045}deg`);
+    mascotFrame=requestAnimationFrame(tickMascot);
+  };
   mascot.addEventListener("pointermove",e=>{
     const r=mascot.getBoundingClientRect();
-    const nx=(e.clientX-r.left)/r.width-.5;
-    const ny=(e.clientY-r.top)/r.height-.5;
-    mascot.style.setProperty("--mascot-x",`${nx*4}px`);
-    mascot.style.setProperty("--mascot-y",`${ny*3}px`);
-    mascot.style.setProperty("--mascot-rotate",`${nx*.18}deg`);
+    mascotTarget.rx=((e.clientX-r.left)/r.width-.5)*6;
+    mascotTarget.ry=((e.clientY-r.top)/r.height-.5)*4;
+    if(!mascotFrame) mascotFrame=requestAnimationFrame(tickMascot);
   },{passive:true});
   mascot.addEventListener("pointerleave",()=>{
-    mascot.style.setProperty("--mascot-x","0px");
-    mascot.style.setProperty("--mascot-y","0px");
-    mascot.style.setProperty("--mascot-rotate","0deg");
+    mascotTarget.rx=0;mascotTarget.ry=0;
   });
 }
