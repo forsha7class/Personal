@@ -2,13 +2,6 @@ const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelect
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 $("#year").textContent=new Date().getFullYear();
 
-const saved=localStorage.getItem("dika-theme");
-if(saved==="light")document.body.classList.add("light");
-$("#themeBtn")?.addEventListener("click",()=>{
-  document.body.classList.toggle("light");
-  localStorage.setItem("dika-theme",document.body.classList.contains("light")?"light":"dark");
-});
-
 let motionOn=!reduce;
 const motionBtn=$("#motionBtn");
 function syncMotionUI(){
@@ -17,6 +10,7 @@ function syncMotionUI(){
   const label=motionOn?"Disable visual effects":"Enable visual effects";
   motionBtn.setAttribute("aria-label",label);
   motionBtn.setAttribute("title",label);
+  motionBtn.setAttribute("aria-pressed",String(motionOn));
   const stateEl=motionBtn.querySelector("b");
   if(stateEl)stateEl.textContent=state;
 }
@@ -42,29 +36,112 @@ const menuBtn=$("#menuBtn"), mobileMenu=$("#mobileMenu");
 const menuOpenIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
 const menuCloseIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 let lockedScrollY=0;
+
 function setMenu(open){
   if(!mobileMenu||!menuBtn)return;
-  const next=Boolean(open);
-  if(next){
-    lockedScrollY=window.scrollY||document.documentElement.scrollTop||0;
-    mobileMenu.classList.add("open");
+
+  if(open){
+    lockedScrollY=window.scrollY||window.pageYOffset||0;
+    document.body.classList.add("menu-open");
     document.body.style.top=`-${lockedScrollY}px`;
-  }else{
-    mobileMenu.classList.remove("open");
-    document.body.style.top="";
+    document.body.style.width="100%";
+    mobileMenu.classList.add("open");
+    mobileMenu.setAttribute("aria-hidden","false");
+    menuBtn.setAttribute("aria-expanded","true");
+    menuBtn.setAttribute("aria-label","Close navigation");
+    menuBtn.innerHTML=menuCloseIcon;
+    return;
   }
-  mobileMenu.setAttribute("aria-hidden",String(!next));
-  menuBtn.setAttribute("aria-expanded",String(next));
-  menuBtn.setAttribute("aria-label",next?"Close navigation":"Open navigation");
-  menuBtn.innerHTML=next?menuCloseIcon:menuOpenIcon;
-  document.body.classList.toggle("menu-open",next);
-  if(!next)requestAnimationFrame(()=>window.scrollTo(0,lockedScrollY));
+
+  const restoreY=lockedScrollY;
+  mobileMenu.classList.remove("open");
+  mobileMenu.setAttribute("aria-hidden","true");
+  menuBtn.setAttribute("aria-expanded","false");
+  menuBtn.setAttribute("aria-label","Open navigation");
+  menuBtn.innerHTML=menuOpenIcon;
+  document.body.classList.remove("menu-open");
+  document.body.style.top="";
+  document.body.style.width="";
+  requestAnimationFrame(()=>window.scrollTo({top:restoreY,left:0,behavior:"auto"}));
 }
+
 menuBtn?.addEventListener("click",()=>setMenu(!mobileMenu.classList.contains("open")));
-$$('.mobile-menu a').forEach(a=>a.addEventListener("click",()=>setMenu(false)));
-addEventListener("keydown",e=>{if(e.key==="Escape"&&mobileMenu.classList.contains("open"))setMenu(false)});
-addEventListener("resize",()=>{if(innerWidth>980&&mobileMenu.classList.contains("open"))setMenu(false)},{passive:true});
-mobileMenu?.addEventListener("click",e=>{if(e.target===mobileMenu)setMenu(false)});
+
+$$(".mobile-menu a").forEach(link=>{
+  link.addEventListener("click",event=>{
+    const selector=link.getAttribute("href");
+    const target=selector?document.querySelector(selector):null;
+    if(!target)return;
+    event.preventDefault();
+
+    const currentY=target.getBoundingClientRect().top+window.scrollY;
+    mobileMenu.classList.remove("open");
+    mobileMenu.setAttribute("aria-hidden","true");
+    menuBtn.setAttribute("aria-expanded","false");
+    menuBtn.setAttribute("aria-label","Open navigation");
+    menuBtn.innerHTML=menuOpenIcon;
+    document.body.classList.remove("menu-open");
+    document.body.style.top="";
+    document.body.style.width="";
+
+    requestAnimationFrame(()=>{
+      const headerOffset=window.innerWidth<=640?78:88;
+      window.scrollTo({top:Math.max(0,currentY-headerOffset),left:0,behavior:"smooth"});
+    });
+  });
+});
+
+document.addEventListener("pointerdown",event=>{
+  if(!mobileMenu.classList.contains("open"))return;
+  const clickedInside=mobileMenu.contains(event.target)||menuBtn.contains(event.target);
+  if(!clickedInside)setMenu(false);
+});
+
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")setMenu(false);
+});
+
+window.addEventListener("resize",()=>{
+  if(window.innerWidth>980&&mobileMenu.classList.contains("open"))setMenu(false);
+});
+
+
+const hero = $(".hero-right");
+const progressBar = $(".scroll-progress");
+function updateScrollFx(){
+  const doc=document.documentElement;
+  const max=doc.scrollHeight-window.innerHeight;
+  const p=max>0 ? window.scrollY/max : 0;
+  if(progressBar) progressBar.style.transform=`scaleX(${p})`;
+  if(!reduce && motionOn && hero && window.innerWidth>640){
+    const rect=hero.getBoundingClientRect();
+    const offset=Math.max(-1,Math.min(1,(window.innerHeight*.5-rect.top-rect.height*.5)/(rect.height*.75)));
+    hero.style.setProperty("--parallax-y",`${offset*10}px`);
+  }else if(hero){
+    hero.style.setProperty("--parallax-y","0px");
+  }
+}
+window.addEventListener("scroll",updateScrollFx,{passive:true});
+window.addEventListener("resize",updateScrollFx);
+
+
+const interactiveGlow = $$(".focus-card,.project,.tool,.contact-card");
+if(!reduce){
+  interactiveGlow.forEach(card=>{
+    card.addEventListener("pointermove",e=>{
+      if(!motionOn)return;
+      const r=card.getBoundingClientRect();
+      const px=(e.clientX-r.left)/r.width*100;
+      const py=(e.clientY-r.top)/r.height*100;
+      card.style.setProperty("--px",`${px}%`);
+      card.style.setProperty("--py",`${py}%`);
+    },{passive:true});
+    card.addEventListener("pointerleave",()=>{
+      card.style.removeProperty("--px");
+      card.style.removeProperty("--py");
+    });
+  });
+}
 
 const orb=$(".pointer-light");
 if(!reduce&&orb)addEventListener("pointermove",e=>{
@@ -113,22 +190,29 @@ updateActiveNav();
 if(!reduce){
   $$(".magnetic").forEach(btn=>{
     btn.addEventListener("pointermove",e=>{
+      if(!motionOn)return;
       const r=btn.getBoundingClientRect();
       const x=((e.clientX-r.left)/r.width-.5)*6;
       const y=((e.clientY-r.top)/r.height-.5)*4;
       btn.style.transform=`translate(${x}px,${y}px)`;
-    });
+    },{passive:true});
     btn.addEventListener("pointerleave",()=>btn.style.transform="");
   });
 
   const art=$("[data-tilt]");
   art?.addEventListener("pointermove",e=>{
+    if(!motionOn)return;
     const r=art.getBoundingClientRect();
     const x=(e.clientX-r.left)/r.width-.5;
     const y=(e.clientY-r.top)/r.height-.5;
-    art.style.transform=`perspective(1200px) rotateX(${y*-1.5}deg) rotateY(${x*1.9}deg)`;
+    art.style.setProperty("--tilt-x",`${y*-1.5}deg`);
+    art.style.setProperty("--tilt-y",`${x*1.9}deg`);
+  },{passive:true});
+
+  art?.addEventListener("pointerleave",()=>{
+    art.style.setProperty("--tilt-x","0deg");
+    art.style.setProperty("--tilt-y","0deg");
   });
-  art?.addEventListener("pointerleave",()=>art.style.transform="");
 }
 
 const type=$("#typed"), phrases=[
