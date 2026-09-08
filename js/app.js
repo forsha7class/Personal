@@ -147,3 +147,27 @@ if(!reduce&&mascot){
     mascotTarget.rx=0;mascotTarget.ry=0;
   });
 }
+
+/* Hero particles follow the cursor (parallax depth per particle). */
+const parts=$$(".hero-particles i");
+if(!reduce&&parts.length){
+  const heroEl=$(".hero");
+  const target={x:0,y:0};
+  const pos=parts.map(()=>({x:0,y:0}));
+  heroEl?.addEventListener("pointermove",e=>{
+    const r=heroEl.getBoundingClientRect();
+    target.x=(e.clientX-r.left)/r.width-.5;
+    target.y=(e.clientY-r.top)/r.height-.5;
+  },{passive:true});
+  heroEl?.addEventListener("pointerleave",()=>{target.x=0;target.y=0});
+  const tick=()=>{
+    parts.forEach((p,i)=>{
+      const d=16+(i%4)*8;
+      pos[i].x+=(target.x*d-pos[i].x)*.07;
+      pos[i].y+=(target.y*d-pos[i].y)*.07;
+      p.style.translate=`${pos[i].x}px ${pos[i].y}px`;
+    });
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
