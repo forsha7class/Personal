@@ -106,6 +106,9 @@ const hudIndex=$("#hudIndex"),hudName=$("#hudName");
 const hudTargets=[["home","HOME"],["about","ABOUT"],["lawtech","LAW × TECH"],["projects","PROJECTS"],["thoughts","THOUGHTS"],["contact","CONTACT"]].map(([id,name])=>({el:document.getElementById(id),id,name})).filter(x=>x.el);
 function updateHud(){if(!hudIndex||!hudName)return;const marker=window.scrollY+window.innerHeight*.35;let current=hudTargets[0];for(const item of hudTargets)if(item.el.offsetTop<=marker)current=item;const index=Math.max(1,hudTargets.findIndex(x=>x.id===current.id)+1);hudIndex.textContent=String(index).padStart(2,"0");hudName.textContent=current.name}
 addEventListener("scroll",updateHud,{passive:true});addEventListener("resize",updateHud);updateHud();
+const navToggle=$("#navToggle");
+if(navToggle){navToggle.addEventListener("click",()=>{const open=navToggle.getAttribute("aria-expanded")==="true";navToggle.setAttribute("aria-expanded",String(!open));navToggle.setAttribute("aria-label",open?"Open menu":"Close menu");$("#siteNav")?.classList.toggle("open",!open);document.body.classList.toggle("menu-open",!open)});$$(".nav a").forEach(a=>a.addEventListener("click",()=>{navToggle.setAttribute("aria-expanded","false");navToggle.setAttribute("aria-label","Open menu");$("#siteNav")?.classList.remove("open");document.body.classList.remove("menu-open")}))}
+
 const focusGroup=document.querySelector(".focus-group");
 if(focusGroup){const cards=[...focusGroup.querySelectorAll(".project")];cards.forEach(card=>{card.addEventListener("pointerenter",()=>{focusGroup.classList.add("has-focus");card.classList.add("is-focus")});card.addEventListener("pointerleave",()=>{focusGroup.classList.remove("has-focus");card.classList.remove("is-focus")})})}
 
