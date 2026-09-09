@@ -106,6 +106,10 @@ a{color:inherit;text-decoration:none}button{font:inherit}.container{width:min(13
   .status-card{width:118px}
   .tools{grid-template-columns:repeat(3,1fr)}
 }
+@media(max-width:640px){
+  .reveal[data-motion="left"],.reveal[data-motion="right"]{transform:translateY(18px)}
+  .reveal[data-motion="blur"]{transform:translateY(10px);filter:none}
+}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .reveal{opacity:1;transform:none;transition:none}
