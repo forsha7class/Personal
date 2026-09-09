@@ -110,7 +110,28 @@ const navToggle=$("#navToggle");
 if(navToggle){navToggle.addEventListener("click",()=>{const open=navToggle.getAttribute("aria-expanded")==="true";navToggle.setAttribute("aria-expanded",String(!open));navToggle.setAttribute("aria-label",open?"Open menu":"Close menu");$("#siteNav")?.classList.toggle("open",!open);document.body.classList.toggle("menu-open",!open)});$$(".nav a").forEach(a=>a.addEventListener("click",()=>{navToggle.setAttribute("aria-expanded","false");navToggle.setAttribute("aria-label","Open menu");$("#siteNav")?.classList.remove("open");document.body.classList.remove("menu-open")}))}
 
 const focusGroup=document.querySelector(".focus-group");
-if(focusGroup){const cards=[...focusGroup.querySelectorAll(".project")];cards.forEach(card=>{card.addEventListener("pointerenter",()=>{focusGroup.classList.add("has-focus");card.classList.add("is-focus")});card.addEventListener("pointerleave",()=>{focusGroup.classList.remove("has-focus");card.classList.remove("is-focus")})})}
+
+/* V23 decode-scramble: headings re-type from terminal glyphs on reveal. */
+const GLYPHS="!<>-_\\/[]{}—=+*^?#";
+const scrambleEls=$$(".scramble");
+if(scrambleEls.length&&!reduce){
+  const scramble=el=>{
+    if(el.dataset.done||el._scrambling)return;
+    const final=el.textContent, n=final.length, start=performance.now(), DUR=650;
+    el._scrambling=true;el.classList.add("scrambling");
+    const frame=now=>{
+      const t=Math.min((now-start)/DUR,1), solved=Math.floor(t*n);
+      let out="";
+      for(let i=0;i<n;i++){const ch=final[i];out+=(i<solved||ch===" ")?ch:GLYPHS[(Math.random()*GLYPHS.length)|0]}
+      el.textContent=out;
+      if(t<1)requestAnimationFrame(frame);
+      else{el.textContent=final;el.classList.remove("scrambling");el.dataset.done="1";el._scrambling=false}
+    };
+    requestAnimationFrame(frame);
+  };
+  const sio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){scramble(e.target);sio.unobserve(e.target)}}),{threshold:.4});
+  scrambleEls.forEach(el=>{const f=el.textContent;el.dataset.text=f;sio.observe(el)});
+}
 
 /* V22 mascot awakening lifecycle */
 const mascot=document.querySelector(".themis-mascot");
