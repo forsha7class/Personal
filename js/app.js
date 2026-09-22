@@ -49,11 +49,13 @@ updateActiveNav();
 
 if(!reduce){
   const magneticButtons=$$(".magnetic"), art=$("[data-tilt]"), cards=$$(".focus-card,.project,.tool,.contact-card"), targets=new WeakMap();
-  magneticButtons.forEach(btn=>{targets.set(btn,{x:0,y:0,tx:0,ty:0});btn.addEventListener("pointermove",e=>{const s=targets.get(btn),r=btn.getBoundingClientRect();s.tx=((e.clientX-r.left)/r.width-.5)*6;s.ty=((e.clientY-r.top)/r.height-.5)*4},{passive:true});btn.addEventListener("pointerleave",()=>{const s=targets.get(btn);s.tx=0;s.ty=0})});
+  let motionFrame=0;
+  function animateMotion(){let active=false;magneticButtons.forEach(btn=>{const s=targets.get(btn);s.x+=(s.tx-s.x)*.12;s.y+=(s.ty-s.y)*.12;btn.style.transform=`translate3d(${s.x}px,${s.y}px,0)`;if(Math.abs(s.x-s.tx)>=.05||Math.abs(s.y-s.ty)>=.05)active=true});motionFrame=active?requestAnimationFrame(animateMotion):0}
+  const startMotion=()=>{if(!motionFrame)motionFrame=requestAnimationFrame(animateMotion)};
+  magneticButtons.forEach(btn=>{targets.set(btn,{x:0,y:0,tx:0,ty:0});btn.addEventListener("pointermove",e=>{const s=targets.get(btn),r=btn.getBoundingClientRect();s.tx=((e.clientX-r.left)/r.width-.5)*6;s.ty=((e.clientY-r.top)/r.height-.5)*4;startMotion()},{passive:true});btn.addEventListener("pointerleave",()=>{const s=targets.get(btn);s.tx=0;s.ty=0;startMotion()})});
   art?.addEventListener("pointermove",e=>{const r=art.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;art.style.setProperty("--tilt-x",`${y*-1.35}deg`);art.style.setProperty("--tilt-y",`${x*1.75}deg`)},{passive:true});
   art?.addEventListener("pointerleave",()=>{art.style.setProperty("--tilt-x","0deg");art.style.setProperty("--tilt-y","0deg")});
   cards.forEach(card=>{card.addEventListener("pointermove",e=>{const r=card.getBoundingClientRect();card.style.setProperty("--px",`${((e.clientX-r.left)/r.width)*100}%`);card.style.setProperty("--py",`${((e.clientY-r.top)/r.height)*100}%`)},{passive:true});card.addEventListener("pointerleave",()=>{card.style.removeProperty("--px");card.style.removeProperty("--py")})});
-  const animateMotion=()=>{magneticButtons.forEach(btn=>{const s=targets.get(btn);s.x+=(s.tx-s.x)*.12;s.y+=(s.ty-s.y)*.12;btn.style.transform=`translate3d(${s.x}px,${s.y}px,0)`});requestAnimationFrame(animateMotion)};requestAnimationFrame(animateMotion);
 }
 
 const type=$("#typed"), phrases=[
@@ -84,21 +86,6 @@ revealSequence.forEach((el, i) => {
   el.style.setProperty("--delay", `${Math.min(i * 45, 420)}ms`);
 });
 
-if (!reduce) {
-  $$(".focus-card,.project,.thought,.tool").forEach(card => {
-    card.addEventListener("pointermove", e => {
-      const r = card.getBoundingClientRect();
-      const x = ((e.clientX - r.left) / r.width) * 100;
-      const y = ((e.clientY - r.top) / r.height) * 100;
-      card.style.backgroundImage =
-        `radial-gradient(circle at ${x}% ${y}%, rgba(217,173,85,.08), transparent 38%), linear-gradient(150deg,#11141a,#0d1016)`;
-    });
-    card.addEventListener("pointerleave", () => {
-      card.style.backgroundImage = "";
-    });
-  });
-}
-
 const boot=$("#boot");
 if(boot){const finishBoot=()=>setTimeout(()=>boot.classList.add("is-done"),4200);if(document.readyState==="complete")finishBoot();else addEventListener("load",finishBoot,{once:true})}
 
@@ -108,8 +95,6 @@ function updateHud(){if(!hudIndex||!hudName)return;const marker=window.scrollY+w
 addEventListener("scroll",updateHud,{passive:true});addEventListener("resize",updateHud);updateHud();
 const navToggle=$("#navToggle");
 if(navToggle){navToggle.addEventListener("click",()=>{const open=navToggle.getAttribute("aria-expanded")==="true";navToggle.setAttribute("aria-expanded",String(!open));navToggle.setAttribute("aria-label",open?"Open menu":"Close menu");$("#siteNav")?.classList.toggle("open",!open);document.body.classList.toggle("menu-open",!open)});$$(".nav a").forEach(a=>a.addEventListener("click",()=>{navToggle.setAttribute("aria-expanded","false");navToggle.setAttribute("aria-label","Open menu");$("#siteNav")?.classList.remove("open");document.body.classList.remove("menu-open")}))}
-
-const focusGroup=document.querySelector(".focus-group");
 
 /* V23 decode-scramble: headings re-type from terminal glyphs on reveal. */
 const GLYPHS="!<>-_\\/[]{}—=+*^?#";
