@@ -1,0 +1,90 @@
+/* ============================================================
+   DIKA/OS — design tokens
+   Single source of truth for colour, type, spacing and motion.
+   ============================================================ */
+
+@font-face {
+  font-family: "Manrope";
+  src: url("../assets/fonts/manrope-latin-variable.woff2") format("woff2");
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Mono";
+  src: url("../assets/fonts/dm-mono-400-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Mono";
+  src: url("../assets/fonts/dm-mono-500-latin.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* surfaces */
+  --bg: #080d16;
+  --bg-deep: #050810;
+  --surface: #101a29;
+  --surface-2: #0c1522;
+  --surface-3: #131f31;
+
+  /* accents */
+  --accent: #67e8f9;
+  --accent-strong: #22d3ee;
+  --accent-dim: rgba(103, 232, 249, 0.12);
+  --law: #d9ad55;
+  --law-dim: rgba(217, 173, 85, 0.12);
+
+  /* text */
+  --text: #f8fafc;
+  --muted: #a9b6c7;
+  --dim: #8a97a8;
+
+  /* lines */
+  --border: #263548;
+  --border-soft: rgba(38, 53, 72, 0.65);
+  --line: var(--border-soft);
+
+  /* status */
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --info: #7dd3fc;
+  --idle: #94a3b8;
+
+  /* type */
+  --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* geometry */
+  --radius: 14px;
+  --radius-sm: 9px;
+  --radius-lg: 20px;
+  --max: 1240px;
+  --gutter: 48px;
+  --header-h: 72px;
+
+  /* motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 0.5s;
+  --shadow: 0 26px 70px rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 900px) {
+  :root {
+    --gutter: 24px;
+    --header-h: 64px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --gutter: 18px;
+  }
+}

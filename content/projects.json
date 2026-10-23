@@ -1,0 +1,190 @@
+{
+  "site": {
+    "name": "DIKA/OS",
+    "url": "https://dikapersonal.my.id",
+    "author": "Dika",
+    "role": "Systems builder",
+    "email": "tautauajayang4@gmail.com",
+    "github": "https://github.com/forsha7class",
+    "instagram": "https://instagram.com/kwdkaa"
+  },
+  "stack": [
+    {
+      "group": "Languages",
+      "items": ["TypeScript", "JavaScript", "Python", "HTML", "CSS"]
+    },
+    {
+      "group": "Frameworks & runtime",
+      "items": ["React", "Next.js", "Vite", "Tailwind CSS", "Node.js"]
+    },
+    {
+      "group": "Tooling & quality",
+      "items": ["Playwright", "Vitest", "axe-core", "Git", "GitHub Pages", "Linux"]
+    }
+  ],
+  "projects": [
+    {
+      "slug": "rizzy",
+      "name": "RIZZY",
+      "tagline": "Brand site and simulated ordering flow for a Chicken Katsu and Es Kelapa concept.",
+      "category": "Product experience",
+      "status": "live",
+      "year": "2026",
+      "visibility": "published",
+      "featured": true,
+      "summary": "RIZZY is a static brand presentation paired with a fully simulated ordering flow. A visitor can build an order, review it, and walk through a fake QRIS or USDT payment to a completed state — with no backend, no database and no money moving anywhere.",
+      "problem": "Presenting an ordering experience normally requires a working payment stack. That is expensive to build before the concept itself has been validated, so the demo had to show the full journey without pretending to be a real shop.",
+      "solution": "A browser-only demo that reproduces the ordering journey using an explicit state machine. Payment is simulated and every screen states plainly that no real order or payment occurs.",
+      "features": [
+        "Landing page presenting the RIZZY brand and product concept.",
+        "Order builder: choose a package and quantity.",
+        "Checkout summary derived from the selected order.",
+        "Simulated QRIS and USDT payment screens, including explicit underpaid and overpaid states.",
+        "Deterministic demo state machine — status never advances on its own and never randomises.",
+        "Hash routing (#/, #/order, #/checkout, #/payment) so no server rewrite rules are required.",
+        "Safe empty states: refreshing a deep link loses the in-memory order by design instead of failing.",
+        "A reset control that returns the demo to an idle state."
+      ],
+      "contribution": "Public repository under Dika's GitHub account with a single-author history of 6 commits. Interface, state machine, pricing logic and demo configuration all live in one codebase.",
+      "architecture": "React 19 built with Vite. Routing is a small hash router (src/lib/hash-router.ts), which lets the build run on GitHub Pages without rewrite rules. Order state is kept in src/state/OrderContext.tsx and never leaves memory. src/lib/demo-machine.ts is a pure state machine — idle → awaiting → submitted → verified → processing → completed, with underpaid and overpaid branches — while src/lib/pricing.ts owns the totals. Catalog and payment details are configuration in src/config/. There is no backend, database, authentication, payment gateway, analytics or external API.",
+      "technologies": ["React 19", "TypeScript", "Vite 8", "Tailwind CSS 4", "Motion for React"],
+      "evidence": [
+        {
+          "label": "Live demo",
+          "url": "https://forsha7class.github.io/rizzy/"
+        },
+        {
+          "label": "Source code",
+          "url": "https://github.com/forsha7class/rizzy"
+        }
+      ],
+      "figures": [
+        {
+          "src": "/assets/projects/rizzy-landing.webp",
+          "alt": "RIZZY landing page shown at 1440 pixels wide",
+          "caption": "Landing page — brand presentation at 1440 px."
+        },
+        {
+          "src": "/assets/projects/rizzy-payment.webp",
+          "alt": "RIZZY simulated payment screen showing a pending QRIS transaction",
+          "caption": "Simulated payment step — clearly marked as a demo."
+        }
+      ],
+      "quality": [
+        "Unit tests cover the demo state machine, pricing, formatting and catalog configuration (23 test cases in source).",
+        "Playwright with axe-core is configured for end-to-end and accessibility checks."
+      ],
+      "limitations": [
+        "Demo only — no orders are accepted and no payments are processed.",
+        "No backend, database or persistence; refreshing a deep link intentionally loses the order.",
+        "No authentication, analytics or third-party integration."
+      ],
+      "nextSteps": []
+    },
+    {
+      "slug": "kelapaku",
+      "name": "KelapaKu",
+      "tagline": "Single-page brand site explaining how coconuts become four product lines.",
+      "category": "Brand site",
+      "status": "live",
+      "year": "2026",
+      "visibility": "published",
+      "featured": true,
+      "summary": "KelapaKu is a one-page brand site that explains how coconuts sourced from local growers are processed into fresh coconut, peeled coconut, copra and shell charcoal.",
+      "problem": "A commodity business spread across several product lines needs one clear explanation of its supply chain — for buyers, partners and the community around it.",
+      "solution": "A static, single-page site built with the Next.js App Router and exported as plain files, served from GitHub Pages on a custom domain.",
+      "features": [
+        "Single page covering four product lines: fresh coconut, peeled coconut, copra and shell charcoal.",
+        "Static export — the build produces plain files with no server runtime.",
+        "Deployed on GitHub Pages at kelapaku.my.id."
+      ],
+      "contribution": "Public repository under Dika's GitHub account (9 commits), from interface through static export configuration.",
+      "architecture": "Next.js 15 with the App Router and output: \"export\", so the production build is a directory of static files rather than a running server. React 19 and Tailwind CSS 4 handle the interface, with Framer Motion for transitions.",
+      "technologies": ["Next.js 15", "React 19", "Tailwind CSS 4", "Framer Motion", "TypeScript"],
+      "evidence": [
+        {
+          "label": "Live site",
+          "url": "https://www.kelapaku.my.id/"
+        },
+        {
+          "label": "Source code",
+          "url": "https://github.com/forsha7class/kelapaku"
+        }
+      ],
+      "figures": [],
+      "quality": [],
+      "limitations": [
+        "Static brand page: no ordering, inventory or account system lives in this repository."
+      ],
+      "nextSteps": []
+    },
+    {
+      "slug": "forsha-7",
+      "name": "FORSHA 7",
+      "tagline": "Class identity page for FORSHA 7, Bali Crystal College — one static file, no build step.",
+      "category": "Static site",
+      "status": "live",
+      "year": "2026",
+      "visibility": "published",
+      "featured": true,
+      "summary": "A class identity page listing every member with photos and roles, rendered entirely from a single data array inside one HTML file.",
+      "problem": "The page had to show every member consistently — wall, gallery, search and profiles — while staying simple enough for anyone in the class to edit.",
+      "solution": "One index.html and one PEOPLE array. Every section is generated from that array, so a member is a single line of data rather than five copies of markup.",
+      "features": [
+        "Single static HTML file — no framework, no bundler, no build step.",
+        "All members defined in one PEOPLE array as the single source of truth.",
+        "Class wall, gallery, search, profile and closing formation all render from that array.",
+        "GSAP and the Outfit font are vendored locally, so the page makes no third-party requests."
+      ],
+      "contribution": "Public repository under Dika's GitHub account (34 commits), including the data-driven rendering and the self-contained asset setup.",
+      "architecture": "A static index.html served directly by GitHub Pages. A PEOPLE array holds one entry per person; the wall, gallery, search, profile view and closing formation are all derived from it at runtime. Vendor assets (GSAP, Outfit) are stored in the repository so the page has no external dependencies.",
+      "technologies": ["HTML", "CSS", "Vanilla JavaScript", "GSAP"],
+      "evidence": [
+        {
+          "label": "Live site",
+          "url": "https://forsha7class.github.io/FORSHA7/"
+        },
+        {
+          "label": "Source code",
+          "url": "https://github.com/forsha7class/FORSHA7"
+        }
+      ],
+      "figures": [],
+      "quality": [],
+      "limitations": [
+        "Adding a member means editing the PEOPLE array by hand in the HTML file."
+      ],
+      "nextSteps": []
+    },
+    {
+      "slug": "gustavo",
+      "name": "GUSTAVO Quant Terminal",
+      "tagline": "",
+      "category": "Quant research tooling",
+      "status": "research",
+      "year": "",
+      "visibility": "pending-review",
+      "featured": false
+    },
+    {
+      "slug": "coconut-erp",
+      "name": "Coconut ERP",
+      "tagline": "",
+      "category": "Business system",
+      "status": "development",
+      "year": "",
+      "visibility": "pending-review",
+      "featured": false
+    },
+    {
+      "slug": "ai-city",
+      "name": "AI City",
+      "tagline": "",
+      "category": "Technical system",
+      "status": "research",
+      "year": "",
+      "visibility": "pending-review",
+      "featured": false
+    }
+  ]
+}

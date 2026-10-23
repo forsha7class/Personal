@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>DIKA/OS — OG card source</title>
+<style>
+  @font-face {
+    font-family: "Manrope";
+    src: url("../assets/fonts/manrope-latin-variable.woff2") format("woff2");
+    font-weight: 400 800;
+    font-display: block;
+  }
+  @font-face {
+    font-family: "DM Mono";
+    src: url("../assets/fonts/dm-mono-400-latin.woff2") format("woff2");
+    font-weight: 400;
+    font-display: block;
+  }
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    width: 1200px;
+    height: 630px;
+    background: #080d16;
+    color: #f8fafc;
+    font-family: "Manrope", system-ui, sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+  .grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(38, 53, 72, 0.6) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(38, 53, 72, 0.6) 1px, transparent 1px);
+    background-size: 96px 96px;
+    mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 78%);
+    -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 78%);
+  }
+  .glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(620px circle at 84% 12%, rgba(103, 232, 249, 0.16), transparent 62%),
+      radial-gradient(520px circle at 8% 92%, rgba(217, 173, 85, 0.12), transparent 62%);
+  }
+  .frame {
+    position: absolute;
+    inset: 36px;
+    border: 1px solid #263548;
+    border-radius: 20px;
+  }
+  .content {
+    position: absolute;
+    inset: 36px;
+    padding: 54px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .top { display: flex; align-items: center; gap: 14px; }
+  .mark {
+    width: 44px; height: 44px; display: grid; place-items: center;
+    border: 1px solid #263548; border-radius: 11px;
+    color: #67e8f9; font: 500 17px "DM Mono", monospace;
+    background: #101a29;
+  }
+  .brand { font-size: 13px; font-weight: 700; letter-spacing: .16em; }
+  .brand small { display: block; margin-top: 3px; font: 400 9px "DM Mono", monospace; letter-spacing: .14em; color: #8a97a8; }
+  h1 {
+    font-size: 74px;
+    line-height: 1.02;
+    letter-spacing: -.045em;
+    font-weight: 800;
+    max-width: 15ch;
+  }
+  h1 em { font-style: normal; color: #67e8f9; display: block; }
+  .bottom { display: flex; align-items: flex-end; justify-content: space-between; }
+  .meta { font: 400 12px "DM Mono", monospace; letter-spacing: .12em; color: #a9b6c7; text-transform: uppercase; }
+  .meta b { color: #67e8f9; font-weight: 400; }
+  .pill {
+    padding: 8px 14px; border: 1px solid #263548; border-radius: 999px;
+    font: 400 10px "DM Mono", monospace; letter-spacing: .14em; color: #d9ad55;
+  }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="glow"></div>
+  <div class="frame"></div>
+  <div class="content">
+    <div class="top">
+      <span class="mark">D</span>
+      <span class="brand">DIKA/OS<small>SYSTEMS BUILDER</small></span>
+    </div>
+    <h1>I build systems,<em>not just interfaces.</em></h1>
+    <div class="bottom">
+      <span class="meta">dikapersonal.my.id · <b>3 published builds</b></span>
+      <span class="pill">LAW × TECHNOLOGY</span>
+    </div>
+  </div>
+</body>
+</html>

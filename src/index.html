@@ -1,0 +1,236 @@
+    <section class="hero" id="home">
+      <div class="container hero-layout">
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span class="dot" aria-hidden="true"></span> SYSTEMS BUILDER · LAW × TECHNOLOGY</p>
+
+          <h1>
+            <span class="line">I build systems,</span>
+            <span class="line line--accent">not just interfaces.</span>
+          </h1>
+
+          <p class="hero-lede">
+            I build web systems and the engineering around them — interfaces, automation, and the tests
+            that keep them honest. My focus sits where technology meets law: systems that have to behave
+            predictably under real constraints.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="/projects/">VIEW PROJECTS <span class="arrow" aria-hidden="true">→</span></a>
+            <a class="btn" href="#terminal">OPEN TERMINAL</a>
+          </div>
+
+          <div class="hero-meta">
+            <div><span>PUBLISHED BUILDS</span><strong>{{publishedCount}}</strong></div>
+            <div><span>LATEST SHIP</span>{{latestProject}}</div>
+            <div><span>CORE STACK</span><strong>TS · REACT · NEXT</strong></div>
+          </div>
+        </div>
+
+        <div class="hero-art reveal" data-pointer-glow>
+          <img
+            src="/assets/themis-hero.webp"
+            srcset="/assets/themis-hero-640.webp 640w, /assets/themis-hero.webp 1024w"
+            sizes="(max-width: 1040px) 92vw, 42vw"
+            alt="Futuristic statue of Themis, blindfolded and holding the scales of justice, lit in gold."
+            width="1024"
+            height="1536"
+            fetchpriority="high"
+            decoding="async"
+          >
+          <div class="art-scrim" aria-hidden="true"></div>
+          <span class="frame-corner frame-tl" aria-hidden="true"></span>
+          <span class="frame-corner frame-tr" aria-hidden="true"></span>
+          <span class="frame-corner frame-bl" aria-hidden="true"></span>
+          <span class="frame-corner frame-br" aria-hidden="true"></span>
+          <span class="art-label art-label--tl">SIGNATURE / THEMIS-01</span>
+          <span class="art-label art-label--br">LAW × TECHNOLOGY</span>
+          <div class="art-caption">
+            <span>SYMBOL</span>
+            <strong>THEMIS</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="terminal">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-id">01 / TERMINAL</span>
+          <h2>Ask the system.</h2>
+          <p>
+            A read-only navigation layer over the same content on this page. Type <code>help</code> to see
+            the commands — or ignore it entirely and use the links, which always work.
+          </p>
+        </div>
+
+        <div class="console reveal" data-terminal>
+          <div class="console-bar">
+            <span class="console-title"><b aria-hidden="true">›</b> DIKA/OS — SHELL</span>
+            <span class="console-hint">read-only · no commands reach a server</span>
+          </div>
+
+          <div class="console-log" data-term-log role="log" aria-live="polite" aria-label="Terminal output"></div>
+
+          <form class="console-form" data-term-form autocomplete="off">
+            <label class="sr-only" for="term-input">Terminal command</label>
+            <span class="console-prompt" aria-hidden="true">dika@os:~$</span>
+            <input
+              class="console-input"
+              id="term-input"
+              data-term-input
+              type="text"
+              name="command"
+              placeholder="type a command"
+              autocomplete="off"
+              autocapitalize="off"
+              autocorrect="off"
+              spellcheck="false"
+            >
+            <button class="console-run" type="submit">RUN</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="build">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-id">02 / WHAT I BUILD</span>
+          <h2>Three things I keep coming back to.</h2>
+          <p>
+            Not a list of everything I have touched — a list of the work the case studies actually show.
+          </p>
+        </div>
+
+        <div class="cap-grid">
+          <article class="cap-card reveal">
+            <span class="cap-index">01</span>
+            <h3>Product interfaces</h3>
+            <p>
+              React and TypeScript interfaces that survive motion, small screens and keyboard-only use.
+              State is explicit, so behaviour is predictable.
+            </p>
+            <div class="cap-tags"><span>React</span><span>TypeScript</span><span>Tailwind</span></div>
+          </article>
+
+          <article class="cap-card reveal">
+            <span class="cap-index">02</span>
+            <h3>Static systems</h3>
+            <p>
+              Sites that ship as plain files: no runtime, no third-party requests unless they earn their
+              place, and a build you can read in one sitting.
+            </p>
+            <div class="cap-tags"><span>HTML</span><span>CSS</span><span>GitHub Pages</span></div>
+          </article>
+
+          <article class="cap-card reveal">
+            <span class="cap-index">03</span>
+            <h3>Quality engineering</h3>
+            <p>
+              State machines, unit tests and automated accessibility checks — so behaviour is verified
+              rather than assumed.
+            </p>
+            <div class="cap-tags"><span>Vitest</span><span>Playwright</span><span>axe-core</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-id">03 / BUILDS</span>
+          <h2>Published work.</h2>
+          <p>
+            Every entry has a public link and readable source. Each case study states what is implemented,
+            what is deliberately missing, and how to check it for yourself.
+          </p>
+        </div>
+
+        <div class="project-grid">
+      {{projectCards}}
+        </div>
+
+        <div class="cs-next">
+          <a class="btn" href="/projects/">ALL PROJECTS <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="stack">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-id">04 / STACK</span>
+          <h2>Tools I actually use.</h2>
+          <p>
+            Only tools that appear in the published repositories. If it is not in the work, it is not on
+            this list.
+          </p>
+        </div>
+
+        <div class="stack-grid">
+    {{stackGroups}}
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-id">05 / ABOUT</span>
+          <h2>Systems first, decoration second.</h2>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-copy reveal">
+            <p>
+              I am Dika. I build software systems and the structure around them — the interface people
+              touch, the state that sits behind it, and the checks that keep both honest.
+            </p>
+            <p>
+              My background sits at the intersection of <strong>law and technology</strong>. That shows up
+              less as legal content and more as a working habit: define the rules, make failure modes
+              explicit, and be able to explain why the system behaves the way it does.
+            </p>
+            <p>
+              I prefer small systems that can be read end to end. The builds on this site are public for
+              that reason — you can open the source, run them, and disagree with my choices.
+            </p>
+          </div>
+
+          <ul class="principles reveal">
+            <li>
+              <b>Evidence over adjectives</b>
+              <span>If it cannot be opened, run or read, it does not go on the page.</span>
+            </li>
+            <li>
+              <b>Boring where it counts</b>
+              <span>Predictable state, explicit failure modes, no magic in the critical path.</span>
+            </li>
+            <li>
+              <b>Accessible by default</b>
+              <span>Keyboard paths, focus states and contrast are part of the build, not a cleanup pass.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="contact-card reveal">
+          <div>
+            <span class="section-id">06 / CONTACT</span>
+            <h2>Have a system worth <em>building?</em></h2>
+            <p class="contact-note">No forms. No tracking. Plain links out.</p>
+          </div>
+          <div class="contact-actions">
+            <a class="btn primary" href="mailto:tautauajayang4@gmail.com">EMAIL <span class="arrow" aria-hidden="true">→</span></a>
+            <a class="btn" href="https://github.com/forsha7class" target="_blank" rel="noopener noreferrer">GITHUB ↗</a>
+            <a class="btn" href="https://instagram.com/kwdkaa" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+{{termData}}
