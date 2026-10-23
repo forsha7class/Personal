@@ -1,0 +1,642 @@
+/* ============================================================
+   DIKA/OS — motion layer
+   Everything here is progressive enhancement. With JS disabled or
+   prefers-reduced-motion: reduce, the site is static and complete.
+   ============================================================ */
+
+/* ------------------------------------------------------------------
+   1. Cross-document view transitions (Chrome 126+, Safari 18.2+)
+   ------------------------------------------------------------------ */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: vt-out 0.26s var(--ease-out) both;
+}
+
+::view-transition-new(root) {
+  animation: vt-in 0.32s var(--ease-out) both;
+}
+
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* the project title morphs between the card and the case-study header */
+::view-transition-group(*) {
+  animation-duration: 0.42s;
+  animation-timing-function: var(--ease-out);
+}
+
+/* ------------------------------------------------------------------
+   2. Scroll progress — native scroll timeline, no listener
+   ------------------------------------------------------------------ */
+
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  opacity: 0.9;
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: progress linear;
+    animation-timeline: scroll(root block);
+  }
+
+  @keyframes progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
+
+/* ------------------------------------------------------------------
+   3. Hero entrance
+   ------------------------------------------------------------------ */
+
+.js .hero-copy > * {
+  animation: hero-in 0.72s var(--ease-out) both;
+}
+
+.js .hero-copy > *:nth-child(1) {
+  animation-delay: 40ms;
+}
+
+.js .hero-copy > *:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+.js .hero-copy > *:nth-child(3) {
+  animation-delay: 210ms;
+}
+
+.js .hero-copy > *:nth-child(4) {
+  animation-delay: 290ms;
+}
+
+.js .hero-copy > *:nth-child(5) {
+  animation-delay: 370ms;
+}
+
+.js .hero-art {
+  animation: hero-art-in 0.9s var(--ease-out) 220ms both;
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes hero-art-in {
+  from {
+    opacity: 0;
+    translate: 0 22px;
+    scale: 0.985;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+/* ------------------------------------------------------------------
+   4. Section reveal variants
+   ------------------------------------------------------------------ */
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.72s var(--ease-out), transform 0.72s var(--ease-out);
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.js .reveal[data-motion="left"] {
+  transform: translateX(-24px);
+}
+
+.js .reveal[data-motion="right"] {
+  transform: translateX(24px);
+}
+
+.js .reveal[data-motion="blur"] {
+  transform: translateY(10px);
+  filter: blur(8px);
+  transition: opacity 0.72s var(--ease-out), transform 0.72s var(--ease-out),
+    filter 0.72s var(--ease-out);
+}
+
+.js .reveal[data-motion="left"].is-visible,
+.js .reveal[data-motion="right"].is-visible {
+  transform: none;
+}
+
+.js .reveal[data-motion="blur"].is-visible {
+  filter: none;
+}
+
+/* On narrow screens a horizontal reveal would push the page wider than the
+   viewport. Fall back to a vertical rise. */
+@media (max-width: 720px) {
+  .js .reveal[data-motion="left"],
+  .js .reveal[data-motion="right"] {
+    transform: translateY(16px);
+  }
+}
+
+/* section ids drift slightly as they enter — native view() timeline */
+@supports (animation-timeline: view()) {
+  .section-id {
+    animation: label-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 5% entry 85%;
+  }
+
+  @keyframes label-rise {
+    from {
+      opacity: 0.45;
+      letter-spacing: 0.3em;
+    }
+    to {
+      opacity: 1;
+      letter-spacing: 0.16em;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------
+   5. Themis — signature treatment
+   ------------------------------------------------------------------ */
+
+/* slow drift */
+.hero-art img {
+  animation: ken-burns 24s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes ken-burns {
+  from {
+    transform: scale(1.015) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.075) translate3d(-1.2%, -1.4%, 0);
+  }
+}
+
+/* a light band that sweeps down the artwork */
+.art-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -45%;
+  height: 45%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(217, 173, 85, 0.07) 45%,
+    rgba(255, 236, 189, 0.14) 50%,
+    rgba(217, 173, 85, 0.07) 55%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  animation: art-scan 7.5s linear infinite;
+  animation-delay: 2s;
+}
+
+@keyframes art-scan {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  72% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(340%);
+    opacity: 0;
+  }
+}
+
+/* frame corners draw themselves in */
+.js .frame-corner {
+  animation: corner-in 0.7s var(--ease-out) both;
+}
+
+.js .frame-tl {
+  animation-delay: 620ms;
+  transform-origin: top left;
+}
+
+.js .frame-tr {
+  animation-delay: 700ms;
+  transform-origin: top right;
+}
+
+.js .frame-bl {
+  animation-delay: 780ms;
+  transform-origin: bottom left;
+}
+
+.js .frame-br {
+  animation-delay: 860ms;
+  transform-origin: bottom right;
+}
+
+@keyframes corner-in {
+  from {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  to {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+}
+
+/* gold dust — canvas, paused whenever the hero leaves the viewport */
+.hero-dust {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+.hero.is-idle .art-scan,
+.hero.is-idle .hero-art img {
+  animation-play-state: paused;
+}
+
+/* pointer glare across the artwork */
+.hero-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: radial-gradient(
+    320px circle at var(--px, 50%) var(--py, 40%),
+    rgba(255, 236, 189, 0.14),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.hero-art:hover::after {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------------
+   6. Typography
+   ------------------------------------------------------------------ */
+
+/* magnetic underline in the desktop nav */
+.nav-ink {
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  height: 1px;
+  width: 0;
+  background: var(--accent);
+  transform: translateX(0);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.34s var(--ease-out), width 0.34s var(--ease-out),
+    opacity 0.2s ease;
+}
+
+.nav:hover .nav-ink {
+  opacity: 1;
+}
+
+/* project titles: micro letter-spacing on hover */
+.project-card h3 {
+  transition: letter-spacing 0.4s var(--ease-out);
+}
+
+.project-card:hover h3 {
+  letter-spacing: 0.004em;
+}
+
+/* glitch, only on hover, only for a fraction of a second */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  clip-path: inset(0 0 100% 0);
+}
+
+.project-card:hover .glitch::before {
+  color: var(--accent);
+  animation: glitch-a 0.52s steps(3, end) 1;
+}
+
+.project-card:hover .glitch::after {
+  color: var(--text);
+  animation: glitch-b 0.52s steps(3, end) 1;
+}
+
+@keyframes glitch-a {
+  0% {
+    opacity: 0.9;
+    clip-path: inset(8% 0 76% 0);
+    transform: translate(-2px, 0);
+  }
+  30% {
+    clip-path: inset(52% 0 26% 0);
+    transform: translate(2px, 0);
+  }
+  60% {
+    clip-path: inset(72% 0 8% 0);
+    transform: translate(-1px, 0);
+  }
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: none;
+  }
+}
+
+@keyframes glitch-b {
+  0% {
+    opacity: 0.5;
+    clip-path: inset(64% 0 14% 0);
+    transform: translate(2px, 0);
+  }
+  40% {
+    clip-path: inset(18% 0 66% 0);
+    transform: translate(-2px, 0);
+  }
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: none;
+  }
+}
+
+/* scramble caret */
+.scramble.is-scrambling::after {
+  content: "▌";
+  margin-left: 2px;
+  color: var(--accent);
+  animation: blink 0.9s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------
+   7. Cards
+   ------------------------------------------------------------------ */
+
+/* pointer spotlight */
+.cap-card::before,
+.project-card::before,
+.stack-group::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    340px circle at var(--px, 50%) var(--py, 50%),
+    rgba(217, 173, 85, 0.1),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.cap-card:hover::before,
+.project-card:hover::before,
+.stack-group:hover::before {
+  opacity: 1;
+}
+
+.cap-card,
+.project-card,
+.stack-group {
+  position: relative;
+  isolation: isolate;
+}
+
+/* animated gold edge on hover */
+.project-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    120deg,
+    transparent 20%,
+    var(--accent) 45%,
+    var(--accent-strong) 55%,
+    transparent 80%
+  );
+  background-size: 220% 100%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover::after {
+  opacity: 1;
+  animation: edge-sweep 1.6s linear infinite;
+}
+
+@keyframes edge-sweep {
+  from {
+    background-position: 0% 0;
+  }
+  to {
+    background-position: 220% 0;
+  }
+}
+
+/* the "case study" arrow slides */
+.project-card .go:last-child {
+  transition: transform 0.35s var(--ease-out);
+}
+
+.project-card:hover .go:last-child {
+  transform: translateX(5px);
+}
+
+/* stack chips arrive in sequence */
+.js .stack-list li {
+  animation: chip-in 0.42s var(--ease-out) both;
+}
+
+.js .stack-list li:nth-child(1) { animation-delay: 0ms; }
+.js .stack-list li:nth-child(2) { animation-delay: 45ms; }
+.js .stack-list li:nth-child(3) { animation-delay: 90ms; }
+.js .stack-list li:nth-child(4) { animation-delay: 135ms; }
+.js .stack-list li:nth-child(5) { animation-delay: 180ms; }
+.js .stack-list li:nth-child(6) { animation-delay: 225ms; }
+
+@keyframes chip-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+}
+
+/* ------------------------------------------------------------------
+   8. Cursor ring (fine pointers only)
+   ------------------------------------------------------------------ */
+
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 120;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(-100px, -100px, 0);
+  transition: opacity 0.25s ease, width 0.25s var(--ease-out),
+    height 0.25s var(--ease-out), margin 0.25s var(--ease-out),
+    background-color 0.25s ease;
+}
+
+.cursor-ring.is-active {
+  opacity: 0.55;
+}
+
+.cursor-ring.is-hot {
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  background: rgba(217, 173, 85, 0.1);
+}
+
+@media (pointer: coarse), (hover: none) {
+  .cursor-ring {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   9. Terminal
+   ------------------------------------------------------------------ */
+
+.term-line {
+  animation: term-in 0.22s var(--ease-out) both;
+}
+
+@keyframes term-in {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+}
+
+.console-form::after {
+  content: "";
+  width: 7px;
+  height: 13px;
+  margin-left: -4px;
+  background: var(--accent);
+  animation: blink 1.05s steps(1) infinite;
+  opacity: 0.85;
+}
+
+.console-form:focus-within::after {
+  display: none;
+}
+
+/* ------------------------------------------------------------------
+   10. Reduced motion — switches everything off, keeps content visible
+   ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress,
+  .art-scan,
+  .hero-dust,
+  .cursor-ring,
+  .nav-ink,
+  .console-form::after {
+    display: none !important;
+  }
+
+  .js .hero-copy > *,
+  .js .hero-art,
+  .hero-art img,
+  .js .reveal,
+  .js .frame-corner,
+  .js .stack-list li,
+  .term-line,
+  .section-id {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .project-card:hover .glitch::before,
+  .project-card:hover .glitch::after,
+  .project-card:hover::after {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-group(*) {
+    animation: none !important;
+  }
+}

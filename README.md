@@ -15,13 +15,17 @@ No framework, no bundler, no npm dependencies, no client-side router, no analyti
 
 ```
 content/projects.json     single source of truth for every project
+content/profile.json      identity and bio used by the About section
 templates/layout.html     document shell (head, header, footer)
 src/index.html            homepage body
 src/projects/index.html   project directory body
 css/tokens.css            colour, type, spacing, motion tokens
 css/style.css             layout and components
 css/nav.css               mobile navigation
-js/app.js                 progressive enhancement (nav, reveal)
+css/motion.css            animation layer (view transitions, reveal, effects)
+css/view-transitions.css  generated: view-transition-name per project
+js/app.js                 navigation and scroll reveal
+js/motion.js              pointer effects, canvas dust, text scramble
 js/terminal.js            terminal command interpreter
 assets/                   fonts, images, favicon, OG card
 tools/og.html             source for assets/og.jpg
@@ -37,7 +41,7 @@ node build.mjs --check  # fail if committed output is stale
 ```
 
 Build output (committed, served by Pages): `index.html`, `projects/`,
-`sitemap.xml`, `robots.txt`, `404.html`.
+`sitemap.xml`, `robots.txt`, `404.html`, `css/view-transitions.css`.
 
 Never edit generated HTML by hand — it is overwritten. Every generated file starts
 with a marker comment. Edit `src/` or `content/projects.json` and rebuild.
@@ -115,6 +119,17 @@ that has not been verified yet.
 
 Do not add metrics, customers, revenue, uptime or performance claims that cannot
 be pointed at a public source.
+
+## Motion
+
+`css/motion.css` and `js/motion.js` are additive. With JavaScript disabled the
+site is static and complete. Under `prefers-reduced-motion: reduce` every
+animation, canvas loop and view transition is switched off while all content
+stays visible.
+
+There is no animation loop that runs forever: the hero canvas pauses when the
+hero leaves the viewport or the tab is hidden, and pointer-driven loops stop as
+soon as they settle. If you add an effect, keep that rule.
 
 ## Content policy
 

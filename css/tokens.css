@@ -1,6 +1,7 @@
 /* ============================================================
    DIKA/OS — design tokens
    Single source of truth for colour, type, spacing and motion.
+   Palette is drawn from the Themis artwork: warm gold on near-black.
    ============================================================ */
 
 @font-face {
@@ -29,34 +30,39 @@
 
 :root {
   /* surfaces */
-  --bg: #080d16;
-  --bg-deep: #050810;
-  --surface: #101a29;
-  --surface-2: #0c1522;
-  --surface-3: #131f31;
+  --bg: #07090d;
+  --bg-deep: #05070a;
+  --surface: #0f1319;
+  --surface-2: #0b0f15;
+  --surface-3: #151a22;
 
-  /* accents */
-  --accent: #67e8f9;
-  --accent-strong: #22d3ee;
-  --accent-dim: rgba(103, 232, 249, 0.12);
+  /* accent — the gold in the Themis artwork */
+  --accent: #d9ad55;
+  --accent-strong: #f3cf78;
+  --accent-dim: rgba(217, 173, 85, 0.12);
+  --accent-glow: rgba(217, 173, 85, 0.22);
+
+  /* kept as an alias so older rules keep reading correctly */
   --law: #d9ad55;
   --law-dim: rgba(217, 173, 85, 0.12);
 
   /* text */
-  --text: #f8fafc;
-  --muted: #a9b6c7;
-  --dim: #8a97a8;
+  --text: #f7f5f0;
+  --muted: #a9a69d;
+  --dim: #8a8880;
 
   /* lines */
-  --border: #263548;
-  --border-soft: rgba(38, 53, 72, 0.65);
+  --border: rgba(255, 255, 255, 0.09);
+  --border-soft: rgba(255, 255, 255, 0.06);
   --line: var(--border-soft);
 
   /* status */
-  --ok: #4ade80;
-  --warn: #fbbf24;
-  --info: #7dd3fc;
-  --idle: #94a3b8;
+  --ok: #7ce293;
+  --warn: #e8c67a;
+  --steel: #8fb8d9;
+  --violet: #b9a7e0;
+  --idle: #8b939e;
+  --info: #b9a7e0;
 
   /* type */
   --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -72,8 +78,9 @@
 
   /* motion */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.15, 0.75, 0.35, 1);
   --dur: 0.5s;
-  --shadow: 0 26px 70px rgba(0, 0, 0, 0.45);
+  --shadow: 0 26px 70px rgba(0, 0, 0, 0.5);
 }
 
 @media (max-width: 900px) {

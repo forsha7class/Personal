@@ -1,7 +1,8 @@
     <section class="hero" id="home">
+      <canvas class="hero-dust" aria-hidden="true"></canvas>
       <div class="container hero-layout">
-        <div class="hero-copy reveal">
-          <p class="eyebrow"><span class="dot" aria-hidden="true"></span> SYSTEMS BUILDER · LAW × TECHNOLOGY</p>
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="dot" aria-hidden="true"></span> DIKA — SYSTEMS BUILDER</p>
 
           <h1>
             <span class="line">I build systems,</span>
@@ -9,9 +10,9 @@
           </h1>
 
           <p class="hero-lede">
-            I build web systems and the engineering around them — interfaces, automation, and the tests
-            that keep them honest. My focus sits where technology meets law: systems that have to behave
-            predictably under real constraints.
+            I'm Dika — a systems builder working where software engineering meets law and technology.
+            I build the interface people touch, the state behind it, and the tests that keep both
+            honest.
           </p>
 
           <div class="hero-actions">
@@ -26,7 +27,7 @@
           </div>
         </div>
 
-        <div class="hero-art reveal" data-pointer-glow>
+        <div class="hero-art" data-pointer-glow>
           <img
             src="/assets/themis-hero.webp"
             srcset="/assets/themis-hero-640.webp 640w, /assets/themis-hero-768.webp 768w, /assets/themis-hero.webp 1024w"
@@ -37,6 +38,7 @@
             fetchpriority="high"
             decoding="async"
           >
+          <span class="art-scan" aria-hidden="true"></span>
           <div class="art-scrim" aria-hidden="true"></div>
           <span class="frame-corner frame-tl" aria-hidden="true"></span>
           <span class="frame-corner frame-tr" aria-hidden="true"></span>
@@ -52,11 +54,50 @@
       </div>
     </section>
 
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-id">01 / ABOUT</span>
+          <h2 class="scramble">Systems first, decoration second.</h2>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-copy reveal">
+{{bio}}
+          </div>
+
+          <div class="about-side">
+            <aside class="identity-card reveal" data-motion="right" aria-label="Identity">
+              <span class="identity-label">IDENTITY</span>
+              <dl class="identity-rows">
+                {{identityRows}}
+              </dl>
+            </aside>
+
+            <ul class="principles reveal" data-motion="right">
+              <li>
+                <b>Evidence over adjectives</b>
+                <span>If it cannot be opened, run or read, it does not go on the page.</span>
+              </li>
+              <li>
+                <b>Boring where it counts</b>
+                <span>Predictable state, explicit failure modes, no magic in the critical path.</span>
+              </li>
+              <li>
+                <b>Accessible by default</b>
+                <span>Keyboard paths, focus states and contrast are part of the build, not a cleanup pass.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="terminal">
       <div class="container">
         <div class="section-head reveal">
-          <span class="section-id">01 / TERMINAL</span>
-          <h2>Ask the system.</h2>
+          <span class="section-id">02 / TERMINAL</span>
+          <h2 class="scramble">Ask the system.</h2>
           <p>
             A read-only navigation layer over the same content on this page. Type <code>help</code> to see
             the commands — or ignore it entirely and use the links, which always work.
@@ -95,15 +136,15 @@
     <section class="section" id="build">
       <div class="container">
         <div class="section-head reveal">
-          <span class="section-id">02 / WHAT I BUILD</span>
-          <h2>Three things I keep coming back to.</h2>
+          <span class="section-id">03 / WHAT I BUILD</span>
+          <h2 class="scramble">Three things I keep coming back to.</h2>
           <p>
             Not a list of everything I have touched — a list of the work the case studies actually show.
           </p>
         </div>
 
         <div class="cap-grid">
-          <article class="cap-card reveal">
+          <article class="cap-card reveal" data-motion="left">
             <span class="cap-index">01</span>
             <h3>Product interfaces</h3>
             <p>
@@ -123,7 +164,7 @@
             <div class="cap-tags"><span>HTML</span><span>CSS</span><span>GitHub Pages</span></div>
           </article>
 
-          <article class="cap-card reveal">
+          <article class="cap-card reveal" data-motion="right">
             <span class="cap-index">03</span>
             <h3>Quality engineering</h3>
             <p>
@@ -139,8 +180,8 @@
     <section class="section" id="projects">
       <div class="container">
         <div class="section-head reveal">
-          <span class="section-id">03 / BUILDS</span>
-          <h2>Published work.</h2>
+          <span class="section-id">04 / BUILDS</span>
+          <h2 class="scramble">Published work.</h2>
           <p>
             Every entry has a public link and readable source. Each case study states what is implemented,
             what is deliberately missing, and how to check it for yourself.
@@ -160,8 +201,8 @@
     <section class="section" id="stack">
       <div class="container">
         <div class="section-head reveal">
-          <span class="section-id">04 / STACK</span>
-          <h2>Tools I actually use.</h2>
+          <span class="section-id">05 / STACK</span>
+          <h2 class="scramble">Tools I actually use.</h2>
           <p>
             Only tools that appear in the published repositories. If it is not in the work, it is not on
             this list.
@@ -170,48 +211,6 @@
 
         <div class="stack-grid">
     {{stackGroups}}
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="about">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="section-id">05 / ABOUT</span>
-          <h2>Systems first, decoration second.</h2>
-        </div>
-
-        <div class="about-grid">
-          <div class="about-copy reveal">
-            <p>
-              I am Dika. I build software systems and the structure around them — the interface people
-              touch, the state that sits behind it, and the checks that keep both honest.
-            </p>
-            <p>
-              My background sits at the intersection of <strong>law and technology</strong>. That shows up
-              less as legal content and more as a working habit: define the rules, make failure modes
-              explicit, and be able to explain why the system behaves the way it does.
-            </p>
-            <p>
-              I prefer small systems that can be read end to end. The builds on this site are public for
-              that reason — you can open the source, run them, and disagree with my choices.
-            </p>
-          </div>
-
-          <ul class="principles reveal">
-            <li>
-              <b>Evidence over adjectives</b>
-              <span>If it cannot be opened, run or read, it does not go on the page.</span>
-            </li>
-            <li>
-              <b>Boring where it counts</b>
-              <span>Predictable state, explicit failure modes, no magic in the critical path.</span>
-            </li>
-            <li>
-              <b>Accessible by default</b>
-              <span>Keyboard paths, focus states and contrast are part of the build, not a cleanup pass.</span>
-            </li>
-          </ul>
         </div>
       </div>
     </section>

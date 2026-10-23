@@ -1,6 +1,7 @@
 /* ============================================================
-   DIKA/OS — interface behaviour
-   Progressive enhancement only: the site works without JS.
+   DIKA/OS — base behaviour
+   Navigation and scroll reveal. Everything here works without
+   the motion layer and without CSS animations.
    ============================================================ */
 (function () {
   "use strict";
@@ -28,6 +29,7 @@
       toggle.setAttribute("aria-expanded", String(!isOpen));
       toggle.setAttribute("aria-label", isOpen ? "Open menu" : "Close menu");
       nav.classList.toggle("open", !isOpen);
+
       if (!isOpen) {
         var first = nav.querySelector("a");
         if (first) first.focus();
@@ -72,37 +74,11 @@
           observer.unobserve(entry.target);
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -5% 0px" }
     );
 
     reveals.forEach(function (el) {
       observer.observe(el);
     });
   }
-
-  /* ---------- pointer light on the hero artwork ---------- */
-  var art = document.querySelector("[data-pointer-glow]");
-
-  if (art && !reduceMotion) {
-    var frame = 0;
-
-    art.addEventListener(
-      "pointermove",
-      function (event) {
-        if (frame) return;
-        frame = requestAnimationFrame(function () {
-          frame = 0;
-          var box = art.getBoundingClientRect();
-          art.style.setProperty("--px", ((event.clientX - box.left) / box.width) * 100 + "%");
-          art.style.setProperty("--py", ((event.clientY - box.top) / box.height) * 100 + "%");
-        });
-      },
-      { passive: true }
-    );
-  }
-
-  /* ---------- active section marker (home page only) ---------- */
-  /* Nav links to in-page sections are not marked as "current": the page
-     marker (HOME / PROJECTS) already communicates location, and two
-     competing markers read as a bug. Kept intentionally simple. */
 })();

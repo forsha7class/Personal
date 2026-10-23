@@ -1,0 +1,16 @@
+{
+  "displayName": "Dika",
+  "role": "Systems builder",
+  "focus": "Law × Technology",
+  "bio": [
+    "I'm Dika — a systems builder working where software engineering meets law and technology.",
+    "I care about how systems behave when things go wrong: explicit state, clear failure modes, and interfaces that stay usable on a small screen with a keyboard. Most of what I build ends up as web software, usually with TypeScript, React or Next.js.",
+    "The work is public on purpose. Every build here links to its source, says what is missing, and can be checked by someone who doesn't trust me."
+  ],
+  "fullName": "",
+  "basedIn": "",
+  "studying": "",
+  "status": "",
+  "photo": "",
+  "languages": ""
+}
