@@ -27,7 +27,10 @@ css/view-transitions.css  generated: view-transition-name per project
 js/app.js                 navigation and scroll reveal
 js/motion.js              pointer effects, canvas dust, text scramble
 js/terminal.js            terminal command interpreter
+js/viewer.js              adaptive 3D hero — device scanner and camera choreography
 assets/                   fonts, images, favicon, OG card
+assets/3d/lex-01.glb      hero model (Poly Haven marble bust 01, CC0)
+assets/vendor/            self-hosted model-viewer build
 tools/og.html             source for assets/og.jpg
 tests/qa.mjs              route, metadata, link, safety and browser checks
 build.mjs                 generator
@@ -131,6 +134,29 @@ There is no animation loop that runs forever: the hero canvas pauses when the
 hero leaves the viewport or the tab is hidden, and pointer-driven loops stop as
 soon as they settle. If you add an effect, keep that rule.
 
+## The 3D hero
+
+`js/viewer.js` swaps the static hero artwork for an interactive `model-viewer`
+scene, but only after scanning the device. Nothing is fetched until the scan
+passes its pre-flight:
+
+- **Pre-flight** — reduced motion, data-saver or a 2G connection, no WebGL2, or
+  a software renderer (SwiftShader, llvmpipe) stop at the poster. Low memory or
+  few cores start at `lite`.
+- **Probe** — the model is loaded, then frame timing is measured for about a
+  second. A poor result steps the mode down and measures again. The verdict is
+  kept in `sessionStorage` for the rest of the session.
+
+Modes, richest to cheapest: `full` (entrance, idle drift, breathing, pointer
+follow, scroll tilt, drag), `lite` (entrance and a slow sway), `still` (3D with
+no animation), `poster` (no 3D at all). A device that never loads the model
+pays nothing for it.
+
+The camera loop stops when the hero leaves the viewport or the tab is hidden,
+and under `prefers-reduced-motion` the hero never leaves the poster — the same
+rule as above. `tests/qa.mjs` asserts both, plus the asset budget and that
+every script and stylesheet is self-hosted.
+
 ## Content policy
 
 Everything in this repository is public: the site, the source and
@@ -140,3 +166,5 @@ endpoints or third-party personal data here.
 ## Credits
 
 Typefaces: Manrope and DM Mono, self-hosted (SIL Open Font License).
+3D: `model-viewer` 4.4.0, self-hosted (Apache-2.0; bundles lit, BSD-3-Clause, and
+three.js, MIT). Hero model: "marble_bust_01" by Poly Haven, CC0.

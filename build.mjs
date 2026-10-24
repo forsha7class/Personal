@@ -445,7 +445,8 @@ emit(
     description:
       "Dika — systems builder. Software engineering, static systems and quality engineering, with case studies that show public evidence for every claim.",
     body: homeBody,
-    active: "home"
+    active: "home",
+    extraHead: '<script src="/js/viewer.js" defer></script>'
   })
 );
 

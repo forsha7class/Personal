@@ -27,28 +27,51 @@
           </div>
         </div>
 
-        <div class="hero-art" data-pointer-glow>
+        <div class="hero-art" data-pointer-glow data-render="poster">
           <img
-            src="/assets/themis-hero.webp"
-            srcset="/assets/themis-hero-640.webp 640w, /assets/themis-hero-768.webp 768w, /assets/themis-hero.webp 1024w"
-            sizes="(max-width: 1040px) 92vw, 42vw"
-            alt="Futuristic statue of Themis, blindfolded and holding the scales of justice, lit in gold."
-            width="1024"
-            height="1536"
+            class="hero-poster"
+            src="/assets/lex-01-poster.webp"
+            alt="Classical marble bust standing on a round plinth — the DIKA/OS signature."
+            width="960"
+            height="1200"
             fetchpriority="high"
             decoding="async"
           >
+          <model-viewer
+            class="hero-model"
+            src="/assets/3d/lex-01.glb"
+            poster="/assets/lex-01-poster.webp"
+            alt="Classical marble bust standing on a round plinth — the DIKA/OS signature, shown in 3D."
+            camera-controls
+            touch-action="pan-y"
+            camera-orbit="24deg 76deg 1.05m"
+            camera-target="0m 0.27m 0m"
+            min-field-of-view="24deg"
+            max-field-of-view="46deg"
+            exposure="1.06"
+            tone-mapping="aces"
+            shadow-intensity="0.4"
+            interpolation-decay="90"
+            environment-image="neutral"
+            interaction-prompt="none"
+            loading="lazy"
+            reveal="auto"
+          ></model-viewer>
           <span class="art-scan" aria-hidden="true"></span>
           <div class="art-scrim" aria-hidden="true"></div>
           <span class="frame-corner frame-tl" aria-hidden="true"></span>
           <span class="frame-corner frame-tr" aria-hidden="true"></span>
           <span class="frame-corner frame-bl" aria-hidden="true"></span>
           <span class="frame-corner frame-br" aria-hidden="true"></span>
-          <span class="art-label art-label--tl">SIGNATURE / THEMIS-01</span>
+          <span class="art-label art-label--tl">SIGNATURE / LEX-01</span>
           <span class="art-label art-label--br">LAW × TECHNOLOGY</span>
           <div class="art-caption">
             <span>SYMBOL</span>
-            <strong>THEMIS</strong>
+            <strong>LEX</strong>
+          </div>
+          <div class="art-probe" aria-hidden="true">
+            <span class="art-probe-dot"></span>
+            <span class="art-probe-text" data-probe-text>PROBE · ADAPTIVE RENDER</span>
           </div>
         </div>
       </div>

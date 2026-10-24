@@ -156,6 +156,49 @@ await check("no external font requests", async () => {
 });
 
 /* ------------------------------------------------------------------ */
+/* adaptive 3D hero                                                    */
+/* ------------------------------------------------------------------ */
+
+await check("no third-party script or style requests", async () => {
+  const loaderRel = /rel="(stylesheet|preload|modulepreload|preconnect|dns-prefetch|prefetch)"/i;
+  for (const [path, html] of documents) {
+    if (/<script[^>]+src="https?:\/\//.test(html)) throw new Error(`external script on ${path}`);
+    for (const tag of html.matchAll(/<link\b[^>]*>/g)) {
+      if (!loaderRel.test(tag[0])) continue;
+      if (/href="https?:\/\//.test(tag[0])) throw new Error(`external resource on ${path}`);
+    }
+  }
+  return "everything self-hosted";
+});
+
+await check("hero declares a render mode", async () => {
+  const html = documents.get("/") || "";
+  const match = html.match(/class="hero-art"[^>]*data-render="([a-z]+)"/);
+  assert(match, "hero-art has no data-render attribute");
+  assert(["poster", "lite", "full", "still"].includes(match[1]), `unknown render mode "${match[1]}"`);
+  return match[1];
+});
+
+await check("3D hero assets are served within budget", async () => {
+  const glb = await fetch(`${BASE}/assets/3d/lex-01.glb`);
+  assert(glb.status === 200, `GLB status ${glb.status}`);
+  const glbSize = (await glb.arrayBuffer()).byteLength;
+  assert(glbSize < 1.2 * 1024 * 1024, `GLB is ${(glbSize / 1048576).toFixed(2)} MB, over budget`);
+
+  const viewer = await fetch(`${BASE}/assets/vendor/model-viewer.min.js`);
+  assert(viewer.status === 200, `model-viewer status ${viewer.status}`);
+  const viewerSize = (await viewer.arrayBuffer()).byteLength;
+  assert(viewerSize < 1.2 * 1024 * 1024, `model-viewer is ${(viewerSize / 1048576).toFixed(2)} MB, over budget`);
+
+  const poster = await fetch(`${BASE}/assets/lex-01-poster.webp`);
+  assert(poster.status === 200, `poster status ${poster.status}`);
+  const posterSize = (await poster.arrayBuffer()).byteLength;
+  assert(posterSize < 120 * 1024, `poster is ${(posterSize / 1024).toFixed(0)} KB, over budget`);
+
+  return `glb ${(glbSize / 1024).toFixed(0)} KB · viewer ${(viewerSize / 1024).toFixed(0)} KB · poster ${(posterSize / 1024).toFixed(0)} KB`;
+});
+
+/* ------------------------------------------------------------------ */
 /* public-safe content                                                 */
 /* ------------------------------------------------------------------ */
 
@@ -289,12 +332,21 @@ if (!playwright) {
     const visible = await page.evaluate(() => {
       const heading = document.querySelector("h1");
       const opacity = heading ? getComputedStyle(heading).opacity : "0";
-      return { text: heading ? heading.textContent.trim().slice(0, 20) : "", opacity };
+      const poster = document.querySelector(".hero-poster");
+      const model = document.querySelector("model-viewer");
+      return {
+        text: heading ? heading.textContent.trim().slice(0, 20) : "",
+        opacity,
+        poster: poster ? getComputedStyle(poster).display : null,
+        model: model ? getComputedStyle(model).display : null
+      };
     });
 
     await context.close();
     assert(visible.text.length > 0, "h1 missing without JS");
     assert(Number(visible.opacity) === 1, `h1 opacity is ${visible.opacity}`);
+    assert(visible.poster !== "none", "hero poster is hidden without JavaScript");
+    assert(visible.model === "none", "model-viewer is shown without JavaScript");
     return visible.text;
   });
 
@@ -311,6 +363,30 @@ if (!playwright) {
     await context.close();
     assert(hidden === 0, `${hidden} reveal elements still hidden`);
     return "all visible";
+  });
+
+  /* the adaptive 3D hero must never animate under reduced motion */
+  await check("reduced motion keeps the 3D hero on its poster", async () => {
+    const context = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1280, height: 900 } });
+    const page = await context.newPage();
+    await page.goto(BASE + "/", { waitUntil: "load" });
+    await page.waitForTimeout(500);
+
+    const state = await page.evaluate(() => {
+      const art = document.querySelector(".hero-art");
+      const poster = document.querySelector(".hero-poster");
+      return {
+        mode: art ? art.getAttribute("data-render") : null,
+        label: document.querySelector("[data-probe-text]")?.textContent?.trim() || "",
+        poster: poster ? getComputedStyle(poster).display : null
+      };
+    });
+
+    await context.close();
+    assert(state.mode === "poster", `expected poster mode, got ${state.mode}`);
+    assert(state.poster !== "none", "poster is hidden under reduced motion");
+    assert(!/PROBE/.test(state.label), `scanner still probing: "${state.label}"`);
+    return state.label || "poster";
   });
 
   /* keyboard access */

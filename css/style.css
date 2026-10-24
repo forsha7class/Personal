@@ -418,6 +418,33 @@ main,
   filter: brightness(0.9) contrast(1.05) saturate(0.96);
 }
 
+/* adaptive 3D hero — the poster is the base layer; js/viewer.js swaps in the
+   model only after the device scanner confirms it can carry it. */
+.hero-art .hero-poster,
+.hero-art .hero-model {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hero-art .hero-poster {
+  object-position: 50% 50%;
+}
+
+.hero-art .hero-model {
+  background: transparent;
+  --poster-color: transparent;
+  filter: brightness(0.96) contrast(1.04) saturate(0.98);
+}
+
+.hero-art[data-render="poster"] .hero-model {
+  display: none;
+}
+
+.hero-art:not([data-render="poster"]) .hero-poster {
+  display: none;
+}
+
 .art-scrim {
   position: absolute;
   inset: 0;
